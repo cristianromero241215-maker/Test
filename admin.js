@@ -1,0 +1,3 @@
+document.getElementById('saveCfg').addEventListener('click',()=>{const v=document.getElementById('appsScriptUrl').value.trim();if(!v){alert('Ingresa la URL');return;}localStorage.setItem('apps_script_url',v);alert('Guardado. La página pública usará esta URL.');});
+document.getElementById('btnProbar').addEventListener('click',async()=>{const date=document.getElementById('testDate').value;const url=localStorage.getItem('apps_script_url');const out=document.getElementById('testOutput');out.textContent='Cargando...';if(!date||!url){out.textContent='Falta fecha o URL.';return;}
+ try{const u=new URL(url);u.searchParams.set('date',date);const res=await fetch(u.toString());out.textContent=await res.text();}catch(e){out.textContent='Error: '+e.message;} });
