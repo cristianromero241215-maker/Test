@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Clínica Dental - Dra. Lesly Vázquez</title>
+  <meta name="description" content="Limpiezas, endodoncias, extracciones, coronas, incrustaciones y resinas. Agenda tu cita con la Dra. Lesly Vázquez.">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    // URLs de tus Apps Script (coloca las correctas)
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/TU_EXEC_ID/exec";
+  </script>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="#inicio" aria-label="Inicio">
+        <img src="assets/logo.png" alt="Logo Dra. Lesly Vázquez"/>
+        <span>Dra. Lesly Vázquez</span>
+      </a>
+      <nav class="main-nav" aria-label="Principal">
+        <a href="#inicio" class="active">Inicio</a>
+        <a href="servicios.html">Servicios</a>
+        <a href="signos-sintomas.html">Signos y Síntomas</a>
+        <a href="#agendar-cita">Agendar</a>
+        <a href="#contacto">Contacto</a>
+        <a href="admin/login.html" class="admin-link">Admin</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero container">
+    <h1>Tu sonrisa, en manos expertas</h1>
+    <p>Odontología integral con un trato humano y profesional. Agenda tu cita con la Dra. Lesly Vázquez.</p>
+    <a href="#agendar-cita" class="btn btn-primary">Agendar cita</a>
+  </section>
+
+  <!-- Servicios -->
+  <section class="services container">
+    <h2>Servicios</h2>
+    <div class="cards">
+      <a class="card" href="servicios.html#limpiezas"><h3>Limpiezas Dentales</h3></a>
+      <a class="card" href="servicios.html#endodoncias"><h3>Endodoncias</h3></a>
+      <a class="card" href="servicios.html#extracciones"><h3>Extracciones</h3></a>
+      <a class="card" href="servicios.html#coronas"><h3>Coronas</h3></a>
+      <a class="card" href="servicios.html#incrustaciones"><h3>Incrustaciones</h3></a>
+      <a class="card" href="servicios.html#resinas"><h3>Resinas</h3></a>
+    </div>
+  </section>
+
+  <!-- Formulario Agendar Cita -->
+  <section id="agendar-cita" class="cita-section container">
+    <h2>Agendar Cita</h2>
+    <form id="formCita" class="cita-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre completo</label>
+          <input type="text" id="nombre" required placeholder="Tu nombre">
+        </div>
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="tel" id="telefono" required placeholder="+52XXXXXXXXXX">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="email" required placeholder="tucorreo@dominio.com">
+        </div>
+        <div class="form-group">
+          <label>Tratamiento</label>
+          <select id="tratamiento" required>
+            <option value="">-- Selecciona --</option>
+            <option value="Limpieza dental">Limpieza dental</option>
+            <option value="Endodoncia">Endodoncia</option>
+            <option value="Extracción">Extracción</option>
+            <option value="Corona">Corona</option>
+            <option value="Incrustación">Incrustación</option>
+            <option value="Resina">Resina</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Fecha de la cita</label>
+          <input type="date" id="fecha" required>
+        </div>
+        <div class="form-group">
+          <label>Hora disponible</label>
+          <select id="hora" required>
+            <option>-- Selecciona una fecha primero --</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Última limpieza dental</label>
+          <input type="date" id="ultimaLimpieza">
+        </div>
+        <div class="form-group">
+          <label>Dolor actual</label>
+          <select id="dolor">
+            <option value="">-- Selecciona --</option>
+            <option value="Ninguno">Ninguno</option>
+            <option value="Leve">Leve</option>
+            <option value="Moderado">Moderado</option>
+            <option value="Intenso">Intenso</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Síntomas</label>
+        <textarea id="sintomas" rows="3" placeholder="Ej. inflamación, sangrado, sensibilidad..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Motivo de la cita</label>
+        <textarea id="motivo" rows="3" placeholder="Describe brevemente tu motivo de consulta"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        <span class="btn-text">📅 Reservar Cita</span>
+        <span class="btn-loader" aria-hidden="true"></span>
+      </button>
+    </form>
+    <div id="mensaje" class="mensaje"></div>
+  </section>
+
+  <!-- Contacto -->
+  <section id="contacto" class="contact container">
+    <h2>Contacto</h2>
+    <ul>
+      <li>WhatsApp: <a href="https://wa.me/523323303334" target="_blank">+52 33 2330 3334</a></li>
+      <li>Instagram: <a href="https://www.instagram.com/dra.lesly_vazquez" target="_blank">@dra.lesly_vazquez</a></li>
+      <li>Dirección: Guadalajara, Jalisco</li>
+    </ul>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="brand">
+        <img src="assets/logo.png" alt="Logo">
+        <strong>Dra. Lesly Vázquez</strong><br>
+        <small>© 2025 Todos los derechos reservados</small>
+      </div>
+      <nav>
+        <a href="#inicio">Inicio</a>
+        <a href="servicios.html">Servicios</a>
+        <a href="signos-sintomas.html">Signos y Síntomas</a>
+        <a href="admin/login.html">Admin</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- WhatsApp flotante -->
+  <a href="https://wa.me/523323303334" class="whatsapp-float" target="_blank" aria-label="WhatsApp">
+    <img src="assets/whatsapp.png" alt="WhatsApp">
+  </a>
+
+  <!-- Script -->
+  <script>
+    const form = document.getElementById("formCita");
+    const fechaInput = document.getElementById("fecha");
+    const horaSelect = document.getElementById("hora");
+    const mensajeBox = document.getElementById("mensaje");
+    const btn = form.querySelector("button");
+
+    fechaInput.setAttribute("min", new Date().toISOString().split("T")[0]);
+
+    fechaInput.addEventListener("change", async () => {
+      horaSelect.innerHTML = "<option>Cargando...</option>";
+      horaSelect.disabled = true;
+      try {
+        const res = await fetch(`${APPS_SCRIPT_URL}?date=${fechaInput.value}`);
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.message);
+
+        horaSelect.innerHTML = data.hours.length
+          ? data.hours.map(h => `<option value="${h}">${h}</option>`).join('')
+          : '<option>No hay horarios disponibles</option>';
+      } catch {
+        horaSelect.innerHTML = '<option>Error al cargar horarios</option>';
+      } finally {
+        horaSelect.disabled = false;
+      }
+    });
+
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+      mensajeBox.style.display = "none";
+      btn.classList.add("loading");
+
+      const payload = {
+        nombre: document.getElementById("nombre").value.trim(),
+        telefono: document.getElementById("telefono").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        tratamiento: document.getElementById("tratamiento").value,
+        fecha: fechaInput.value,
+        hora: horaSelect.value,
+        ultimaLimpieza: document.getElementById("ultimaLimpieza").value,
+        dolor: document.getElementById("dolor").value,
+        sintomas: document.getElementById("sintomas").value,
+        motivo: document.getElementById("motivo").value
+      };
+
+      try {
+        const res = await fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.message || "No se pudo registrar la cita");
+
+        mensajeBox.textContent = "✅ Cita registrada con éxito!";
+        mensajeBox.className = "mensaje exito";
+        mensajeBox.style.display = "block";
+        form.reset();
+        horaSelect.innerHTML = "<option>-- Selecciona una fecha primero --</option>";
+      } catch (err) {
+        mensajeBox.textContent = `❌ ${err.message}`;
+        mensajeBox.className = "mensaje error";
+        mensajeBox.style.display = "block";
+      } finally {
+        btn.classList.remove("loading");
+      }
+    });
+  </script>
+
+</body>
+</html>
