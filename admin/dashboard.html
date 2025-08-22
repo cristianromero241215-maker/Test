@@ -1,1 +1,70 @@
-<!-- dashboard con citas desde Google Sheets -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - Citas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body class="dashboard">
+  <header class="dash-header">
+    <div class="dash-wrap">
+      <div class="brand">
+        <img src="../assets/logo.png" alt="Logo de la clínica" />
+        <strong>Dra. Lesly Vázquez</strong>
+      </div>
+      <nav class="dash-nav">
+        <a href="dashboard.html" class="active">Citas</a>
+        <a href="expediente.html">Expediente</a>
+        <button id="logoutBtn" class="btn btn-outline">Cerrar sesión</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="dash-main">
+    <h1>Citas registradas</h1>
+    <div class="toolbar">
+      <input type="date" id="filtroFecha" />
+      <input type="text" id="filtroTexto" placeholder="Buscar por nombre o tratamiento"/>
+      <div class="filter-group">
+        <label for="filtroEstado">Estado:</label>
+        <select id="filtroEstado">
+          <option value="todos">Todos</option>
+          <option value="Pendiente">Pendiente</option>
+          <option value="Atendida">Atendida</option>
+          <option value="Cancelada">Cancelada</option>
+        </select>
+      </div>
+      <button id="refrescar" class="btn btn-icon"><span class="btn-icon-inner">🔄</span></button>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="loader"></div>
+      <p>Cargando citas...</p>
+    </div>
+
+    <div class="table-wrap">
+      <table id="citasTable">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Teléfono</th>
+            <th>Tratamiento</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+  
+  <div id="notification-container"></div>
+
+  <script src="js/dashboard.js" defer></script>
+</body>
+</html>
