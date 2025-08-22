@@ -1,6 +1,6 @@
 // js/main.js
 
-const APPS_SCRIPT_URL = "URL_DE_TU_API_AQUI";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzVPvx-3jTqpvnYD_leOWPPPOLiOMRZjIRTRB4SftYmcp_hAohJtqJWtskT9G62DP5K/exec";
 
 // Elementos del DOM
 const form = document.getElementById("formCita");
