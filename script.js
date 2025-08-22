@@ -52,6 +52,7 @@ if (esPrimerCitaSelect) {
     }
   });
 }
+
 // Cargar horas disponibles al cambiar la fecha
 const cargarHorarios = async (dateStr) => {
   if (!horaSelect) return;
