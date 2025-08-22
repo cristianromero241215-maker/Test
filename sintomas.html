@@ -1,74 +1,122 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Signos y Síntomas - Clínica Dental</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signos y Síntomas - Dra. Lesly Vázquez</title>
+  <meta name="description" content="Aprende a identificar los signos y síntomas de problemas dentales comunes como dolor, sensibilidad, sangrado de encías y más." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="js/main.js" defer></script>
 </head>
 <body>
   <header class="site-header">
-    <div class="header-left">
-      <img src="assets/logo.png" alt="Logo" class="logo"/>
-      <div class="brand">
-        <h1>Clínica Dental</h1>
+    <div class="container header-inner">
+      <a class="logo" href="index.html" aria-label="Inicio de la página">
+        <img src="assets/logo.png" alt="Logo de la Clínica Dental Dra. Lesly Vázquez" />
         <span>Dra. Lesly Vázquez</span>
-      </div>
+      </a>
+      <nav class="main-nav" aria-label="Principal">
+        <a href="index.html">Inicio</a>
+        <a href="servicios.html">Servicios</a>
+        <a href="signos-sintomas.html" class="active">Signos y Síntomas</a>
+        <a href="index.html#agendar-cita">Agendar</a>
+        <a href="index.html#contacto">Contacto</a>
+        <a href="admin/login.html" class="admin-link">Admin</a>
+      </nav>
+      <button class="burger" aria-label="Abrir menú de navegación" aria-expanded="false">☰</button>
     </div>
-    <nav class="main-nav">
-      <ul class="menu">
-        <li><a href="index.html#inicio">Inicio</a></li>
-        <li><a href="index.html#servicios">Servicios</a></li>
-        <li><a href="index.html#citas">Agendar Cita</a></li>
-        <li><a href="index.html#contacto">Contacto</a></li>
-      </ul>
-    </nav>
   </header>
 
-  <section class="section">
-    <h2>Signos y Síntomas Básicos</h2>
-    <div class="cards">
-      <article class="card">
-        <h3>Limpiezas Dentales</h3>
-        <p>Sangrado de encías, mal aliento, acumulación visible de sarro.</p>
-      </article>
-      <article class="card">
-        <h3>Endodoncias</h3>
-        <p>Dolor intenso, sensibilidad prolongada, inflamación o absceso.</p>
-      </article>
-      <article class="card">
-        <h3>Extracciones</h3>
-        <p>Dolor constante, dientes fracturados no restaurables, muelas del juicio impactadas.</p>
-      </article>
-      <article class="card">
-        <h3>Coronas</h3>
-        <p>Restauraciones grandes o fracturas que comprometen la estructura del diente.</p>
-      </article>
-      <article class="card">
-        <h3>Incrustaciones</h3>
-        <p>Daños parciales que no requieren corona completa.</p>
-      </article>
-      <article class="card">
-        <h3>Resinas</h3>
-        <p>Caries pequeñas, fracturas leves, mejoras estéticas.</p>
-      </article>
+  <main class="container">
+    <h1>Signos y Síntomas de Alerta Dental</h1>
+    <p class="section-sub">Aprende a identificar las señales que tu boca te da para buscar ayuda profesional.</p>
+
+    <section id="dolor" class="service-block">
+      <h2>Dolor Dental</h2>
+      <p>El dolor en los dientes o encías es una de las señales más claras de que algo no anda bien. Es un aviso del cuerpo que no debe ignorarse.</p>
+      <div class="symptoms-list">
+        <h3>Tipos de Dolor y Posibles Causas:</h3>
+        <ul>
+          <li>**Dolor agudo o punzante:** Puede ser una señal de caries profunda o una grieta en el diente.</li>
+          <li>**Dolor constante y sordo:** A menudo indica una infección en la pulpa del diente, que podría requerir una endodoncia.</li>
+          <li>**Dolor al masticar:** Podría ser por una caries, una fractura en un empaste, o un problema con la articulación temporomandibular (ATM).</li>
+          <li>**Dolor generalizado:** A veces se relaciona con una infección en las encías (periodontitis) o bruxismo (rechinamiento de dientes).</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="sensibilidad" class="service-block">
+      <h2>Sensibilidad al Frío y al Calor</h2>
+      <p>Sentir un dolor agudo y breve al consumir alimentos o bebidas frías, calientes o dulces es un síntoma común.</p>
+      <div class="symptoms-list">
+        <h3>¿Qué puede causar la sensibilidad?</h3>
+        <ul>
+          <li>**Caries:** Exponen la dentina, la capa sensible del diente.</li>
+          <li>**Desgaste del esmalte:** Por un cepillado agresivo o consumo de alimentos ácidos.</li>
+          <li>**Encías retraídas:** Dejan expuestas las raíces del diente, que no están protegidas por esmalte.</li>
+          <li>**Fracturas o grietas:** Permiten que los estímulos externos lleguen a la pulpa.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="sangrado" class="service-block">
+      <h2>Encías Hinchadas o que Sangran</h2>
+      <p>Si tus encías sangran al cepillarte o usar hilo dental, es una señal de alerta de enfermedad de las encías, también conocida como gingivitis.</p>
+      <div class="symptoms-list">
+        <h3>Signos a Observar:</h3>
+        <ul>
+          <li>Encías rojas, hinchadas o sensibles.</li>
+          <li>Sangrado al cepillar o usar hilo dental.</li>
+          <li>Mal aliento persistente.</li>
+          <li>Separación de los dientes o encías que se retraen.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="otros-sintomas" class="service-block">
+      <h2>Otros Signos de Alerta</h2>
+      <p>Hay otros síntomas que, aunque no son tan comunes, requieren atención inmediata.</p>
+      <div class="symptoms-list">
+        <ul>
+          <li>**Cambio en el color del diente:** Un diente que se torna gris o marrón puede indicar que la pulpa ha muerto, posiblemente a causa de un golpe.</li>
+          <li>**Mal sabor de boca:** Puede ser signo de una infección que necesita ser drenada.</li>
+          <li>**Úlceras o llagas en la boca:** Si no sanan en una semana, pueden ser un indicio de una condición más grave.</li>
+          <li>**Hinchazón en la mandíbula o el cuello:** Es una señal de que una infección se ha extendido y requiere tratamiento urgente.</li>
+        </ul>
+      </div>
+    </section>
+    
+    <div class="call-to-action">
+      <p>Si presentas alguno de estos síntomas, no esperes a que el problema empeore. Agenda una cita para que un profesional revise tu salud bucal.</p>
+      <a href="index.html#agendar-cita" class="btn btn-primary">Agendar mi cita</a>
     </div>
-  </section>
+  </main>
 
   <footer class="site-footer">
-    <div class="footer-container">
-      <div>
-        <h4>Clínica Dental – Dra. Lesly Vázquez</h4>
-        <p>Atención integral con enfoque humano.</p>
+    <div class="container footer-inner">
+      <div class="brand">
+        <img src="assets/logo.png" alt="Logo de la clínica" />
+        <div><strong>Dra. Lesly Vázquez</strong><br /><small>© 2025</small></div>
       </div>
-      <div>
-        <h4>Redes</h4>
-        <a href="#" target="_blank">Facebook</a>
-        <a href="#" target="_blank">Instagram</a>
-        <a href="#" target="_blank">TikTok</a>
+      <nav class="footer-nav">
+        <a href="index.html">Inicio</a>
+        <a href="servicios.html">Servicios</a>
+        <a href="signos-sintomas.html">Signos y Síntomas</a>
+        <a href="admin/login.html">Admin</a>
+      </nav>
+      <div class="social">
+        <a href="https://www.instagram.com/dra.lesly_vazquez" target="_blank">
+          <img src="assets/instagram.svg" alt="Instagram" />
+        </a>
       </div>
     </div>
-    <p class="footer-bottom">© 2025 Clínica Dental – Todos los derechos reservados.</p>
   </footer>
+
+  <a href="https://wa.me/523323303334" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
+    <img src="assets/whatsapp.svg" alt="Ícono de WhatsApp" />
+  </a>
 </body>
 </html>
