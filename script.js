@@ -38,7 +38,7 @@ if (esPrimerCitaSelect) {
       primerCitaCampos.style.display = "block";
       citaSeguimientoCampos.style.display = "none";
       document.getElementById("motivo_sintomas").required = true;
-      document.getElementById("tratamiento").required = false;
+      document.getElementById("tratamiento").required = true;
     } else if (e.target.value === "No") {
       primerCitaCampos.style.display = "none";
       citaSeguimientoCampos.style.display = "block";
