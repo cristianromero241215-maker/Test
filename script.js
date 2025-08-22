@@ -1,25 +1,141 @@
-const $ = (s)=>document.querySelector(s);const $$=(s)=>Array.from(document.querySelectorAll(s));
-(function(){const saved=localStorage.getItem('apps_script_url');if(saved){window.APPS_SCRIPT_URL=saved;}})();
-function sugerirTratamiento({dolor,sintomas=[],ultima_limpieza}){const d=parseInt(dolor||0,10);const set=new Set(sintomas);
- if(d>=7||set.has('dolor_masticar'))return'Posible Endodoncia';
- if(set.has('fractura'))return'Resina o Corona (según tamaño)';
- if(set.has('sangrado_encias')||set.has('mal_aliento'))return'Limpieza Dental y evaluación periodontal';
- if(ultima_limpieza==='mas_12'||ultima_limpieza==='nunca')return'Limpieza Dental';
- return'Evaluación general';}
-const fechaInput=$('#fecha');const horaSelect=$('#hora');const sugerencia=$('#sugerencia');const respuesta=$('#respuesta');
-async function cargarHorasDisponibles(fechaISO){if(!window.APPS_SCRIPT_URL){horaSelect.innerHTML='<option value="">Configura primero la URL del Apps Script</option>';return;}
- horaSelect.innerHTML='<option>Cargando horas...</option>';
- try{const url=new URL(window.APPS_SCRIPT_URL);url.searchParams.set('date',fechaISO);
-     const res=await fetch(url.toString());const data=await res.json();const slots=data.slots||[];
-     if(slots.length===0){horaSelect.innerHTML='<option value="">No hay horas disponibles</option>';return;}
-     horaSelect.innerHTML='<option value="">Selecciona una hora...</option>'+slots.map(h=>`<option value="${h}">${h}</option>`).join('');
- }catch(err){console.error(err);horaSelect.innerHTML='<option value="">Error al cargar horas</option>'; } }
-fechaInput?.addEventListener('change',(e)=>{const v=e.target.value;if(v)cargarHorasDisponibles(v);});
-document.getElementById('form-cita')?.addEventListener('submit',async(e)=>{e.preventDefault();respuesta.textContent='';if(!window.APPS_SCRIPT_URL){respuesta.textContent='⚠️ Falta configurar la URL del Apps Script.';return;}
- const form=new FormData(e.target);const sintomas=$$('input[name="sintomas[]"]:checked').map(i=>i.value);
- const payload={nombre:form.get('nombre'),email:form.get('email'),telefono:form.get('telefono'),ultima_limpieza:form.get('ultima_limpieza'),dolor:form.get('dolor'),sintomas,descripcion:form.get('descripcion'),fecha:form.get('fecha'),hora:form.get('hora')};
- const sugerido=sugerirTratamiento(payload);sugerencia.textContent='Sugerencia del sistema: '+sugerido;
- try{const res=await fetch(window.APPS_SCRIPT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...payload,sugerido})});
-     const text=await res.text();respuesta.textContent=text||'✅ Cita enviada.';
-     const appts=JSON.parse(localStorage.getItem('appointments')||'[]');appts.push({...payload,createdAt:new Date().toISOString()});localStorage.setItem('appointments',JSON.stringify(appts));
- }catch(err){console.error(err);respuesta.textContent='❌ Error al enviar la cita.';} });
+// js/main.js
+
+const APPS_SCRIPT_URL = "URL_DE_TU_API_AQUI";
+
+// Elementos del DOM
+const form = document.getElementById("formCita");
+const fechaInput = document.getElementById("fecha");
+const horaSelect = document.getElementById("hora");
+const mensajeBox = document.getElementById("mensaje");
+const btn = form ? form.querySelector("button") : null;
+
+// Lógica para el menú hamburguesa
+const burger = document.querySelector(".burger");
+const nav = document.querySelector(".main-nav");
+
+if (burger && nav) {
+  burger.addEventListener("click", () => {
+    const isExpanded = burger.getAttribute("aria-expanded") === "true";
+    burger.setAttribute("aria-expanded", String(!isExpanded));
+    nav.classList.toggle("open");
+  });
+}
+
+// Limitar la fecha mínima del input a hoy
+if (fechaInput) {
+  fechaInput.setAttribute("min", new Date().toISOString().split("T")[0]);
+}
+
+// Cargar horas disponibles al cambiar la fecha
+const cargarHorarios = async (dateStr) => {
+  if (!horaSelect) return;
+  horaSelect.innerHTML = "<option>Cargando...</option>";
+  horaSelect.disabled = true;
+
+  try {
+    const res = await fetch(`${APPS_SCRIPT_URL}?date=${encodeURIComponent(dateStr)}`);
+    const data = await res.json();
+    
+    if (!Array.isArray(data.hours)) {
+      throw new Error("Respuesta inválida del servidor.");
+    }
+
+    if (data.hours.length > 0) {
+      horaSelect.innerHTML = '<option value="">-- Selecciona una hora --</option>';
+      data.hours.forEach(h => {
+        const opt = document.createElement('option');
+        opt.value = h;
+        opt.textContent = h;
+        horaSelect.appendChild(opt);
+      });
+    } else {
+      horaSelect.innerHTML = '<option value="">No hay horarios disponibles</option>';
+    }
+  } catch (err) {
+    console.error(err);
+    horaSelect.innerHTML = '<option value="">Error al cargar horarios</option>';
+  } finally {
+    horaSelect.disabled = false;
+  }
+};
+
+if (fechaInput) {
+  fechaInput.addEventListener("change", (e) => {
+    if (e.target.value) {
+      cargarHorarios(e.target.value);
+    }
+  });
+}
+
+// Enviar el formulario
+if (form) {
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    if (horaSelect.value === "") {
+        if (mensajeBox) {
+            mensajeBox.textContent = "❌ Por favor, selecciona una hora para la cita.";
+            mensajeBox.className = "mensaje error";
+            mensajeBox.style.display = "block";
+        }
+        return;
+    }
+
+    if (mensajeBox) {
+        mensajeBox.style.display = "none";
+    }
+    if (btn) {
+        btn.classList.add("loading");
+    }
+
+    const payload = Object.fromEntries(new FormData(form).entries());
+
+    try {
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+
+      if (!data.ok) {
+        throw new Error(data.message || "No se pudo registrar la cita.");
+      }
+
+      if (mensajeBox) {
+        mensajeBox.textContent = "✅ Cita registrada con éxito!";
+        mensajeBox.className = "mensaje exito";
+      }
+      form.reset();
+      if (horaSelect) {
+        horaSelect.innerHTML = "<option>-- Selecciona una fecha primero --</option>";
+      }
+    } catch (err) {
+      console.error(err);
+      if (mensajeBox) {
+        mensajeBox.textContent = `❌ ${err.message}`;
+        mensajeBox.className = "mensaje error";
+      }
+    } finally {
+      if (mensajeBox) {
+        mensajeBox.style.display = "block";
+        mensajeBox.style.opacity = "1";
+      }
+      if (btn) {
+        btn.classList.remove("loading");
+      }
+    }
+  });
+}
+
+// Lógica para el menú responsive.
+document.querySelectorAll('.main-nav a, .logo, .footer-nav a').forEach(link => {
+    link.addEventListener('click', () => {
+        if (nav) {
+            nav.classList.remove('open');
+        }
+        if (burger) {
+            burger.setAttribute('aria-expanded', 'false');
+        }
+    });
+});
