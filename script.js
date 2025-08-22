@@ -1,6 +1,6 @@
 // js/main.js
 
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwnBQ3y_CLUM7EP3r6AyUw2wnkKi5RvMPZS6WcWYj2aCRcT1XzwxAyt4A148AaLa6Tj/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxDmX3kp48c1OgVaDNxmcEregjgHCXzRjn_p05_qGXF4FLbkuOVbRYmx88o0XdJx3Ec/exec";
 
 // Elementos del DOM
 const form = document.getElementById("formCita");
