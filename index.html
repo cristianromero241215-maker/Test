@@ -81,93 +81,82 @@
     </section>
 
     <section id="agendar-cita" class="cita-section container">
-      <h2>Agendar Cita</h2>
-      <form id="formCita" class="cita-form">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="nombre">Nombre completo</label>
-            <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre" />
-          </div>
-          <div class="form-group">
-            <label for="telefono">Teléfono</label>
-            <input type="tel" id="telefono" name="telefono" required placeholder="+52XXXXXXXXXX" />
-          </div>
+  <h2>Agendar Cita</h2>
+  <form id="formCita" class="cita-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required placeholder="tucorreo@dominio.com" />
+      </div>
+      <div class="form-group">
+        <label for="esPrimerCita">¿Es primer cita?</label>
+        <select id="esPrimerCita" name="esPrimerCita" required>
+          <option value="">-- Selecciona --</option>
+          <option value="Si">Sí</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+    </div>
+    
+    <div id="primerCitaCampos" style="display:none;">
+      <h3>Síntomas y Motivo</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="dolor">¿Tienes dolor actualmente?</label>
+          <select id="dolor" name="dolor">
+            <option value="No">No</option>
+            <option value="Sí">Sí</option>
+          </select>
         </div>
+      </div>
+      <div class="form-group">
+        <label for="motivo_sintomas">Describe tus síntomas o motivo de la consulta</label>
+        <textarea id="motivo_sintomas" name="motivo_sintomas" rows="3" placeholder="Ej. Dolor de muela, sangrado de encías, inflamación..."></textarea>
+      </div>
+    </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required placeholder="tucorreo@dominio.com" />
-          </div>
-          <div class="form-group">
-            <label for="esPrimerCita">¿Es primer cita?</label>
-            <select id="esPrimerCita" name="esPrimerCita" required>
-              <option value="">-- Selecciona --</option>
-              <option value="Si">Sí</option>
-              <option value="No">No</option>
-            </select>
-          </div>
+    <div id="citaSeguimientoCampos" style="display:none;">
+      <h3>Tratamiento y Última Limpieza</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="tratamiento">Tratamiento</label>
+          <select id="tratamiento" name="tratamiento">
+            <option value="">-- Selecciona --</option>
+            <option value="Limpieza dental">Limpieza dental</option>
+            <option value="Endodoncia">Endodoncia</option>
+            <option value="Extracción">Extracción</option>
+            <option value="Corona">Corona</option>
+            <option value="Incrustación">Incrustación</option>
+            <option value="Resina">Resina</option>
+          </select>
         </div>
-        
-        <div id="primerCitaCampos" style="display:none;">
-          <h3>Síntomas y Motivo</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="dolor">¿Tienes dolor actualmente?</label>
-              <select id="dolor" name="dolor">
-                <option value="No">No</option>
-                <option value="Sí">Sí</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="motivo_sintomas">Describe tus síntomas o motivo de la consulta</label>
-            <textarea id="motivo_sintomas" name="motivo_sintomas" rows="3" placeholder="Ej. Dolor de muela, sangrado de encías, inflamación..."></textarea>
-          </div>
+        <div class="form-group">
+          <label for="ultimaLimpieza">Última limpieza dental</label>
+          <input type="date" id="ultimaLimpieza" name="ultimaLimpieza">
         </div>
+      </div>
+    </div>
 
-        <div id="citaSeguimientoCampos" style="display:none;">
-          <h3>Tratamiento y Última Limpieza</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="tratamiento">Tratamiento</label>
-              <select id="tratamiento" name="tratamiento">
-                <option value="">-- Selecciona --</option>
-                <option value="Limpieza dental">Limpieza dental</option>
-                <option value="Endodoncia">Endodoncia</option>
-                <option value="Extracción">Extracción</option>
-                <option value="Corona">Corona</option>
-                <option value="Incrustación">Incrustación</option>
-                <option value="Resina">Resina</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="ultimaLimpieza">Última limpieza dental</label>
-              <input type="date" id="ultimaLimpieza" name="ultimaLimpieza">
-            </div>
-          </div>
-        </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="fecha">Fecha de la cita</label>
+        <input type="date" id="fecha" name="fecha" required>
+      </div>
+      <div class="form-group">
+        <label for="hora">Hora disponible</label>
+        <select id="hora" name="hora" required>
+          <option value="">-- Selecciona una fecha primero --</option>
+        </select>
+      </div>
+    </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label for="fecha">Fecha de la cita</label>
-            <input type="date" id="fecha" name="fecha" required>
-          </div>
-          <div class="form-group">
-            <label for="hora">Hora disponible</label>
-            <select id="hora" name="hora" required>
-              <option value="">-- Selecciona una fecha primero --</option>
-            </select>
-          </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary">
-          <span class="btn-text">📅 Reservar Cita</span>
-          <span class="btn-loader" aria-hidden="true"></span>
-        </button>
-      </form>
-      <div id="mensaje" class="mensaje"></div>
-    </section>
+    <button type="submit" class="btn btn-primary">
+      <span class="btn-text">📅 Reservar Cita</span>
+      <span class="btn-loader" aria-hidden="true"></span>
+    </button>
+  </form>
+  <div id="mensaje" class="mensaje"></div>
+</section>
 
     <section id="contacto" class="contact-section">
       </section>
