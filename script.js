@@ -1,6 +1,6 @@
 // js/main.js
 
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyz8YnHU4fvqSXlbJmNarrbLj5TO5vMi4bjfFDMNeWjaMHXCl5DmuDyIVQc_KjFvKHB/exec";
+const APPS_SCRIPT_URL = "URL_DE_TU_API_AQUI";
 
 // Elementos del DOM
 const form = document.getElementById("formCita");
@@ -8,6 +8,11 @@ const fechaInput = document.getElementById("fecha");
 const horaSelect = document.getElementById("hora");
 const mensajeBox = document.getElementById("mensaje");
 const btn = form ? form.querySelector("button") : null;
+
+// Nuevos elementos del formulario
+const esPrimerCitaSelect = document.getElementById("esPrimerCita");
+const primerCitaCampos = document.getElementById("primerCitaCampos");
+const citaSeguimientoCampos = document.getElementById("citaSeguimientoCampos");
 
 // Lógica para el menú hamburguesa
 const burger = document.querySelector(".burger");
@@ -24,6 +29,28 @@ if (burger && nav) {
 // Limitar la fecha mínima del input a hoy
 if (fechaInput) {
   fechaInput.setAttribute("min", new Date().toISOString().split("T")[0]);
+}
+
+// Lógica condicional del formulario
+if (esPrimerCitaSelect) {
+  esPrimerCitaSelect.addEventListener("change", (e) => {
+    if (e.target.value === "Si") {
+      primerCitaCampos.style.display = "block";
+      citaSeguimientoCampos.style.display = "none";
+      document.getElementById("motivo_sintomas").required = true;
+      document.getElementById("tratamiento").required = false;
+    } else if (e.target.value === "No") {
+      primerCitaCampos.style.display = "none";
+      citaSeguimientoCampos.style.display = "block";
+      document.getElementById("motivo_sintomas").required = false;
+      document.getElementById("tratamiento").required = true;
+    } else {
+      primerCitaCampos.style.display = "none";
+      citaSeguimientoCampos.style.display = "none";
+      document.getElementById("motivo_sintomas").required = false;
+      document.getElementById("tratamiento").required = false;
+    }
+  });
 }
 
 // Cargar horas disponibles al cambiar la fecha
@@ -89,6 +116,15 @@ if (form) {
     }
 
     const payload = Object.fromEntries(new FormData(form).entries());
+    
+    if (payload.esPrimerCita === 'Si' && !payload.motivo_sintomas.trim()) {
+      showError("Por favor, describe tus síntomas o motivo de la consulta.");
+      return;
+    }
+    if (payload.esPrimerCita === 'No' && !payload.tratamiento) {
+      showError("Por favor, selecciona un tratamiento.");
+      return;
+    }
 
     try {
       const res = await fetch(APPS_SCRIPT_URL, {
@@ -107,11 +143,13 @@ if (form) {
         mensajeBox.className = "mensaje exito";
       }
       form.reset();
+      primerCitaCampos.style.display = "none";
+      citaSeguimientoCampos.style.display = "none";
+      esPrimerCitaSelect.value = "";
       if (horaSelect) {
         horaSelect.innerHTML = "<option>-- Selecciona una fecha primero --</option>";
       }
     } catch (err) {
-      console.error(err);
       if (mensajeBox) {
         mensajeBox.textContent = `❌ ${err.message}`;
         mensajeBox.className = "mensaje error";
@@ -128,7 +166,15 @@ if (form) {
   });
 }
 
-// Lógica para el menú responsive.
+function showError(message) {
+    if (mensajeBox) {
+        mensajeBox.textContent = `❌ ${message}`;
+        mensajeBox.className = "mensaje error";
+        mensajeBox.style.display = "block";
+        mensajeBox.style.opacity = "1";
+    }
+}
+
 document.querySelectorAll('.main-nav a, .logo, .footer-nav a').forEach(link => {
     link.addEventListener('click', () => {
         if (nav) {
