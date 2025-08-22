@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expediente - Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body class="dashboard">
+  <header class="dash-header">
+    <div class="dash-wrap">
+      <div class="brand">
+        <img src="../assets/logo.png" alt="Logo de la clínica" />
+        <strong>Dra. Lesly Vázquez</strong>
+      </div>
+      <nav class="dash-nav">
+        <a href="dashboard.html">Citas</a>
+        <a href="expediente.html" class="active">Expediente</a>
+        <button id="logoutBtn" class="btn btn-outline">Cerrar sesión</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="dash-main">
+    <h1>Expediente Clínico</h1>
+    <p class="section-sub">Registra y consulta la información médica de los pacientes.</p>
+
+    <div class="card">
+      <form id="expedienteForm">
+        <h2>Información del Paciente</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nombre">Nombre Completo</label>
+            <input type="text" id="nombre" name="nombre" required placeholder="Nombre del paciente" />
+          </div>
+          <div class="form-group">
+            <label for="fechaNacimiento">Fecha de Nacimiento</label>
+            <input type="date" id="fechaNacimiento" name="fechaNacimiento" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="telefono">Teléfono</label>
+            <input type="tel" id="telefono" name="telefono" placeholder="+52XXXXXXXXXX" />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" />
+          </div>
+        </div>
+
+        <h2>Historial Médico</h2>
+        <div class="form-group">
+          <label for="condiciones">Condiciones Médicas / Alergias</label>
+          <textarea id="condiciones" name="condiciones" rows="3" placeholder="Diabetes, hipertensión, alergia a la penicilina..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="tratamientosPrevios">Tratamientos Dentales Previos</label>
+          <textarea id="tratamientosPrevios" name="tratamientosPrevios" rows="3" placeholder="Extracción de muela, empaste, limpieza..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="notas">Notas Adicionales</label>
+          <textarea id="notas" name="notas" rows="3" placeholder="Notas sobre el estado bucal, recomendaciones, etc."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+          <span class="btn-text">Guardar Expediente</span>
+          <span class="btn-loader" aria-hidden="true"></span>
+        </button>
+      </form>
+    </div>
+  </main>
+  
+  <div id="notification-container"></div>
+  <script src="js/expediente.js" defer></script>
+</body>
+</html>
