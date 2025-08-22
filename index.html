@@ -5,93 +5,85 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Clínica Dental - Dra. Lesly Vázquez</title>
   <meta name="description" content="Limpiezas, endodoncias, extracciones, coronas, incrustaciones y resinas. Agenda tu cita con la Dra. Lesly Vázquez." />
-  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
-  
-  <link rel="stylesheet" href="styles.css" />
-  
+  <link rel="stylesheet" href="style.css" />
   <script>
-    // Se recomienda mover estas constantes a tu archivo main.js para separar lógica de estructura
     const APPS_SCRIPT_URL = "URL_DE_TU_API_AQUI";
     const WHATSAPP_NUMBER = "+523323303334";
   </script>
 </head>
 <body>
-
   <header class="site-header">
-    <div class="container site-header__inner">
+    <div class="container header-inner">
       <a class="logo" href="#inicio" aria-label="Inicio de la página">
-        <img src="assets/logo.png" alt="Logo de la Clínica Dental Dra. Lesly Vázquez" class="logo__image" />
-        <span class="logo__text">Dra. Lesly Vázquez</span>
+        <img src="assets/logo.png" alt="Logo de la Clínica Dental Dra. Lesly Vázquez" />
+        <span>Dra. Lesly Vázquez</span>
       </a>
-      <nav class="main-nav" id="main-nav" aria-label="Principal">
-        <a href="#inicio" class="main-nav__link active">Inicio</a>
-        <a href="servicios.html" class="main-nav__link">Servicios</a>
-        <a href="signos-sintomas.html" class="main-nav__link">Signos y Síntomas</a>
-        <a href="#agendar-cita" class="main-nav__link">Agendar</a>
-        <a href="#contacto" class="main-nav__link">Contacto</a>
+      <nav class="main-nav" aria-label="Principal">
+        <a href="#inicio" class="active">Inicio</a>
+        <a href="servicios.html">Servicios</a>
+        <a href="signos-sintomas.html">Signos y Síntomas</a>
+        <a href="#agendar-cita">Agendar</a>
+        <a href="#contacto">Contacto</a>
+        <a href="admin/login.html" class="admin-link">Admin</a>
       </nav>
-      <button class="burger-menu" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="main-nav">
-        <svg class="burger-menu__icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-      </button>
+      <button class="burger" aria-label="Abrir menú de navegación" aria-expanded="false">☰</button>
     </div>
   </header>
 
   <main>
     <section id="inicio" class="hero">
-      <div class="container hero__inner">
-        <div class="hero__copy">
+      <div class="container hero-inner">
+        <div class="hero-copy">
           <h1>Tu sonrisa, en manos expertas</h1>
           <p>Odontología integral con un trato humano y profesional. Agenda tu cita con la Dra. Lesly Vázquez.</p>
-          <div class="hero__cta">
-            <a href="#agendar-cita" class="btn btn--primary">Agendar cita</a>
-            <a href="https://wa.me/523323303334" target="_blank" class="btn btn--outline">
-              <img class="btn__icon" src="assets/whatsapp.png" alt="" /> WhatsApp
-            </a>
+          <div class="hero-cta">
+            <a href="#agendar-cita" class="btn btn-primary">Agendar cita</a>
+            <a href="https://wa.me/523323303334" target="_blank" class="btn btn-outline"><img class="icon" src="assets/whatsapp.png" alt="Ícono de WhatsApp" /> WhatsApp</a>
           </div>
         </div>
-        <div class="hero__art" aria-hidden="true"></div>
+        <div class="hero-art" aria-hidden="true"></div>
       </div>
       <div class="bubbles" aria-hidden="true"></div>
     </section>
 
     <section class="services container">
-      <h2 class="services__title">Servicios</h2>
+      <h2>Servicios</h2>
       <p class="section-sub">Tratamientos con enfoque conservador y resultados duraderos.</p>
-      <div class="services__cards">
+      <div class="cards">
         <a class="card" href="servicios.html#limpiezas">
-          <h3 class="card__title">Limpiezas Dentales</h3>
-          <p class="card__text">Profilaxis y mantenimiento periodontal.</p>
+          <h3>Limpiezas Dentales</h3>
+          <p>Profilaxis y mantenimiento periodontal.</p>
         </a>
         <a class="card" href="servicios.html#endodoncias">
-          <h3 class="card__title">Endodoncias</h3>
-          <p class="card__text">Conserva tus dientes con tratamiento de conducto.</p>
+          <h3>Endodoncias</h3>
+          <p>Conserva tus dientes con tratamiento de conducto.</p>
         </a>
         <a class="card" href="servicios.html#extracciones">
-          <h3 class="card__title">Extracciones</h3>
-          <p class="card__text">Cuando no es posible la conservación de la pieza.</p>
+          <h3>Extracciones</h3>
+          <p>Cuando no es posible la conservación de la pieza.</p>
         </a>
         <a class="card" href="servicios.html#coronas">
-          <h3 class="card__title">Coronas</h3>
-          <p class="card__text">Restauraciones totales estéticas y resistentes.</p>
+          <h3>Coronas</h3>
+          <p>Restauraciones totales estéticas y resistentes.</p>
         </a>
         <a class="card" href="servicios.html#incrustaciones">
-          <h3 class="card__title">Incrustaciones</h3>
-          <p class="card__text">Alternativa conservadora a las coronas.</p>
+          <h3>Incrustaciones</h3>
+          <p>Alternativa conservadora a las coronas.</p>
         </a>
         <a class="card" href="servicios.html#resinas">
-          <h3 class="card__title">Resinas</h3>
-          <p class="card__text">Restauraciones estéticas del color del diente.</p>
+          <h3>Resinas</h3>
+          <p>Restauraciones estéticas del color del diente.</p>
         </a>
       </div>
     </section>
 
-    <section id="agendar-cita" class="appointment-section container">
+    <section id="agendar-cita" class="cita-section container">
       <h2>Agendar Cita</h2>
-      <form id="formCita" class="appointment-form">
-        <div class="appointment-form__row">
+      <form id="formCita" class="cita-form">
+        <div class="form-row">
           <div class="form-group">
             <label for="nombre">Nombre completo</label>
             <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre" />
@@ -101,7 +93,8 @@
             <input type="tel" id="telefono" name="telefono" required placeholder="+52XXXXXXXXXX" />
           </div>
         </div>
-        <div class="appointment-form__row">
+
+        <div class="form-row">
           <div class="form-group">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required placeholder="tucorreo@dominio.com" />
@@ -116,9 +109,9 @@
           </div>
         </div>
         
-        <fieldset id="primerCitaCampos" class="appointment-form__fieldset" style="display:none;">
-          <legend class="appointment-form__legend">Síntomas y Motivo de Consulta</legend>
-          <div class="appointment-form__row">
+        <div id="primerCitaCampos" style="display:none;">
+          <h3>Síntomas y Motivo</h3>
+          <div class="form-row">
             <div class="form-group">
               <label for="dolor">¿Tienes dolor actualmente?</label>
               <select id="dolor" name="dolor">
@@ -128,29 +121,34 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="motivo_sintomas">Describe tus síntomas</label>
-            <textarea id="motivo_sintomas" name="motivo_sintomas" rows="3" placeholder="Ej. Dolor de muela, sangrado de encías..."></textarea>
+            <label for="motivo_sintomas">Describe tus síntomas o motivo de la consulta</label>
+            <textarea id="motivo_sintomas" name="motivo_sintomas" rows="3" placeholder="Ej. Dolor de muela, sangrado de encías, inflamación..."></textarea>
           </div>
-        </fieldset>
+        </div>
 
-        <fieldset id="citaSeguimientoCampos" class="appointment-form__fieldset" style="display:none;">
-          <legend class="appointment-form__legend">Información de Seguimiento</legend>
-          <div class="appointment-form__row">
+        <div id="citaSeguimientoCampos" style="display:none;">
+          <h3>Tratamiento y Última Limpieza</h3>
+          <div class="form-row">
             <div class="form-group">
               <label for="tratamiento">Tratamiento</label>
               <select id="tratamiento" name="tratamiento">
                 <option value="">-- Selecciona --</option>
                 <option value="Limpieza dental">Limpieza dental</option>
-                </select>
+                <option value="Endodoncia">Endodoncia</option>
+                <option value="Extracción">Extracción</option>
+                <option value="Corona">Corona</option>
+                <option value="Incrustación">Incrustación</option>
+                <option value="Resina">Resina</option>
+              </select>
             </div>
             <div class="form-group">
               <label for="ultimaLimpieza">Última limpieza dental</label>
               <input type="date" id="ultimaLimpieza" name="ultimaLimpieza">
             </div>
           </div>
-        </fieldset>
+        </div>
 
-        <div class="appointment-form__row">
+        <div class="form-row">
           <div class="form-group">
             <label for="fecha">Fecha de la cita</label>
             <input type="date" id="fecha" name="fecha" required>
@@ -163,12 +161,12 @@
           </div>
         </div>
 
-        <button type="submit" class="btn btn--primary">
-          <span class="btn__text">📅 Reservar Cita</span>
-          <span class="btn__loader" aria-hidden="true"></span>
+        <button type="submit" class="btn btn-primary">
+          <span class="btn-text">📅 Reservar Cita</span>
+          <span class="btn-loader" aria-hidden="true"></span>
         </button>
       </form>
-      <div id="mensaje" class="form-message"></div>
+      <div id="mensaje" class="mensaje"></div>
     </section>
 
     <section id="contacto" class="contact-section">
@@ -176,27 +174,24 @@
   </main>
 
   <footer class="site-footer">
-    <div class="container site-footer__inner">
-      <div class="site-footer__brand">
-        <img src="assets/logo.png" alt="Logo de la clínica" class="site-footer__logo" />
+    <div class="container footer-inner">
+      <div class="brand">
+        <img src="assets/logo.png" alt="Logo de la clínica" />
         <div><strong>Dra. Lesly Vázquez</strong><br /><small>© 2025 Todos los derechos reservados</small></div>
       </div>
       <nav class="footer-nav">
-        <a href="#inicio" class="footer-nav__link">Inicio</a>
-        <a href="servicios.html" class="footer-nav__link">Servicios</a>
-        <a href="signos-sintomas.html" class="footer-nav__link">Signos y Síntomas</a>
+        <a href="#inicio">Inicio</a>
+        <a href="servicios.html">Servicios</a>
+        <a href="signos-sintomas.html">Signos y Síntomas</a>
+        <a href="admin/login.html">Admin</a>
       </nav>
-      <div class="social-links">
-        <a href="https://www.instagram.com/dra.lesly_vazquez" target="_blank" class="social-links__link">
-          <img src="assets/instagram.png" alt="Instagram" />
-        </a>
+      <div class="social">
+        <a href="https://www.instagram.com/dra.lesly_vazquez" target="_blank"><img src="assets/instagram.png" alt="Instagram" /></a>
       </div>
     </div>
   </footer>
 
-  <a href="https://wa.me/523323303334" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
-    <img src="assets/whatsapp.png" alt="" />
-  </a>
+  <a href="https://wa.me/523323303334" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp"><img src="assets/whatsapp.png" alt="Ícono de WhatsApp" /></a>
 
   <script src="js/main.js"></script>
 </body>
