@@ -1,70 +1,189 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard - Citas</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="admin.css" />
-</head>
-<body class="dashboard">
-  <header class="dash-header">
-    <div class="dash-wrap">
-      <div class="brand">
-        <img src="../assets/logo.png" alt="Logo de la clínica" />
-        <strong>Dra. Lesly Vázquez</strong>
-      </div>
-      <nav class="dash-nav">
-        <a href="dashboard.html" class="active">Citas</a>
-        <a href="expediente.html">Expediente</a>
-        <button id="logoutBtn" class="btn btn-outline">Cerrar sesión</button>
-      </nav>
-    </div>
-  </header>
+// js/admin/dashboard.js
 
-  <main class="dash-main">
-    <h1>Citas registradas</h1>
-    <div class="toolbar">
-      <input type="date" id="filtroFecha" />
-      <input type="text" id="filtroTexto" placeholder="Buscar por nombre o tratamiento"/>
-      <div class="filter-group">
-        <label for="filtroEstado">Estado:</label>
-        <select id="filtroEstado">
-          <option value="todos">Todos</option>
-          <option value="Pendiente">Pendiente</option>
-          <option value="Atendida">Atendida</option>
-          <option value="Cancelada">Cancelada</option>
-        </select>
-      </div>
-      <button id="refrescar" class="btn btn-icon"><span class="btn-icon-inner">🔄</span></button>
-    </div>
+// URL de la API de Google Apps Script para el panel de administración
+const SHEETS_API_URL = "URL_DE_TU_API_AQUI";
 
-    <div class="loading-overlay" id="loadingOverlay">
-      <div class="loader"></div>
-      <p>Cargando citas...</p>
-    </div>
+// =========================================
+// 1. Lógica de Autenticación
+// =========================================
 
-    <div class="table-wrap">
-      <table id="citasTable">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Teléfono</th>
-            <th>Tratamiento</th>
-            <th>Fecha</th>
-            <th>Hora</th>
-            <th>Estado</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </main>
-  
-  <div id="notification-container"></div>
+if (localStorage.getItem('isAdminLoggedIn') !== 'true') {
+  window.location.href = 'login.html';
+}
 
-  <script src="js/dashboard.js" defer></script>
-</body>
-</html>
+document.getElementById('logoutBtn')?.addEventListener('click', () => {
+  localStorage.removeItem('isAdminLoggedIn');
+  window.location.href = 'login.html';
+});
+
+// =========================================
+// 2. Elementos del DOM y Eventos
+// =========================================
+const tbody = document.querySelector('#citasTable tbody');
+const filtroFecha = document.getElementById('filtroFecha');
+const filtroTexto = document.getElementById('filtroTexto');
+const filtroEstado = document.getElementById('filtroEstado');
+const refreshBtn = document.getElementById('refrescar');
+const refreshIcon = refreshBtn?.querySelector('.btn-icon-inner');
+const loaderOverlay = document.getElementById('loadingOverlay');
+
+filtroFecha?.addEventListener('change', renderizarCitas);
+filtroTexto?.addEventListener('input', renderizarCitas);
+filtroEstado?.addEventListener('change', renderizarCitas);
+refreshBtn?.addEventListener('click', cargarYRenderizarCitas);
+
+let todasLasCitas = [];
+
+// =========================================
+// 3. Funciones de Petición y Notificaciones
+// =========================================
+
+function showLoader() {
+  if (loaderOverlay) loaderOverlay.style.display = 'flex';
+  refreshIcon?.classList.add('spin');
+}
+
+function hideLoader() {
+  if (loaderOverlay) loaderOverlay.style.display = 'none';
+  refreshIcon?.classList.remove('spin');
+}
+
+function showNotification(message, type = 'success') {
+  const container = document.getElementById('notification-container');
+  if (!container) return;
+  const notification = document.createElement('div');
+  notification.className = `notification ${type}`;
+  notification.textContent = message;
+  container.appendChild(notification);
+  setTimeout(() => {
+    notification.remove();
+  }, 3000); // 3 segundos
+}
+
+async function cargarCitasDeAPI() {
+  showLoader();
+  const url = `${SHEETS_API_URL}?action=getAll`;
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    showNotification('Error al cargar las citas.', 'error');
+    console.error('Error cargando citas de la API:', error);
+    return [];
+  } finally {
+    hideLoader();
+  }
+}
+
+async function actualizarEstadoEnAPI(cita, nuevoEstado) {
+  const payload = {
+    action: 'updateStatus',
+    nombre: cita.nombre,
+    fecha: cita.fecha,
+    hora: cita.hora,
+    estado: nuevoEstado,
+  };
+
+  try {
+    const res = await fetch(SHEETS_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (data.ok) {
+      showNotification('Estado actualizado correctamente.', 'success');
+    } else {
+      throw new Error(data.message || 'Error desconocido.');
+    }
+  } catch (error) {
+    showNotification('Error al actualizar el estado.', 'error');
+    console.error('Error al actualizar el estado:', error);
+  }
+}
+
+// =========================================
+// 4. Funciones de Renderizado y Lógica
+// =========================================
+
+function renderizarCitas() {
+  if (!tbody) return;
+
+  let citasFiltradas = todasLasCitas;
+
+  if (filtroFecha?.value) {
+    citasFiltradas = citasFiltradas.filter(cita => cita.fecha === filtroFecha.value);
+  }
+
+  if (filtroTexto?.value) {
+    const textoBuscado = filtroTexto.value.toLowerCase();
+    citasFiltradas = citasFiltradas.filter(cita => 
+      cita.nombre.toLowerCase().includes(textoBuscado) ||
+      cita.tratamiento.toLowerCase().includes(textoBuscado)
+    );
+  }
+
+  if (filtroEstado?.value && filtroEstado.value !== 'todos') {
+    citasFiltradas = citasFiltradas.filter(cita => cita.estado === filtroEstado.value);
+  }
+
+  tbody.innerHTML = '';
+  if (citasFiltradas.length === 0) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td colspan="6" style="text-align: center; color: var(--gray-text);">No se encontraron citas.</td>`;
+    tbody.appendChild(tr);
+    return;
+  }
+
+  citasFiltradas.forEach(cita => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${cita.nombre}</td>
+      <td>${cita.telefono}</td>
+      <td>${cita.tratamiento}</td>
+      <td>${cita.fecha}</td>
+      <td>${cita.hora}</td>
+      <td></td>
+    `;
+    
+    const tdEstado = tr.children[5];
+    const selectEstado = document.createElement('select');
+    const estados = ['Pendiente', 'Atendida', 'Cancelada'];
+    estados.forEach(estado => {
+      const option = document.createElement('option');
+      option.value = estado;
+      option.textContent = estado;
+      if (estado === cita.estado) {
+        option.selected = true;
+      }
+      selectEstado.appendChild(option);
+    });
+
+    const estadoClase = cita.estado.toLowerCase().replace('á', 'a');
+    selectEstado.classList.add(`select-status-${estadoClase}`);
+
+    selectEstado.addEventListener('change', () => {
+      if (confirm('¿Estás seguro de que quieres cambiar el estado de esta cita?')) {
+        const index = todasLasCitas.findIndex(c => c.nombre === cita.nombre && c.fecha === cita.fecha && c.hora === cita.hora);
+        if (index !== -1) {
+          todasLasCitas[index].estado = selectEstado.value;
+          selectEstado.className = `select-status-${selectEstado.value.toLowerCase().replace('á', 'a')}`;
+        }
+        actualizarEstadoEnAPI(cita, selectEstado.value);
+      } else {
+        selectEstado.value = cita.estado;
+      }
+    });
+
+    tdEstado.appendChild(selectEstado);
+    tbody.appendChild(tr);
+  });
+}
+
+async function cargarYRenderizarCitas() {
+  todasLasCitas = await cargarCitasDeAPI();
+  renderizarCitas();
+}
+
+cargarYRenderizarCitas();
