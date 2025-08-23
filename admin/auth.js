@@ -1,4 +1,4 @@
-// admin/auth.js
+// admin/js/auth.js
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
@@ -10,7 +10,7 @@ const firebaseConfig = {
   projectId: "odontoles-d926a",
   storageBucket: "odontoles-d926a.firebasestorage.app",
   messagingSenderId: "736431544596",
-  appId: "1:736431544596:web:70333f4f830582fa2e8a01",
+  appId: "1:736431544596:web:70333f4f830582fa2e8a01"
 };
 
 // =========================================
@@ -23,8 +23,7 @@ if (localStorage.getItem('isAdminLoggedIn') === 'true') {
 
 // Lista de correos electrónicos de administradores permitidos
 const allowedEmails = [
-  "ylsel9998@gmail.com",
-  "cristianromero241215@gmail.com"
+  "ylsel9998@gmail.com"
 ];
 
 const app = initializeApp(firebaseConfig);
