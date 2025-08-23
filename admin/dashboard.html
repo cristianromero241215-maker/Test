@@ -51,6 +51,7 @@
       <button id="refrescar" class="btn btn-icon" title="Refrescar">
         <span class="btn-icon-inner">⟳</span>
       </button>
+      <button id="exportCsv" class="btn btn-outline" title="Exportar CSV">Exportar CSV</button>
     </div>
 
     <div class="table-wrap">
@@ -102,11 +103,13 @@ const loaderOverlay = document.getElementById('loadingOverlay');
 const badgePendiente = document.getElementById('badgePendiente');
 const badgeAtendida = document.getElementById('badgeAtendida');
 const badgeCancelada = document.getElementById('badgeCancelada');
+const exportBtn = document.getElementById('exportCsv');
 
 filtroFecha?.addEventListener('change', renderizarCitas);
 filtroTexto?.addEventListener('input', renderizarCitas);
 filtroEstado?.addEventListener('change', renderizarCitas);
 refreshBtn?.addEventListener('click', cargarYRenderizarCitas);
+exportBtn?.addEventListener('click', () => exportarCSV(citasActualesRenderizadas));
 
 const root = document.documentElement;
 const themeToggle = document.getElementById('themeToggle');
@@ -121,6 +124,7 @@ themeToggle?.addEventListener('click', () => {
 });
 
 let todasLasCitas = [];
+let citasActualesRenderizadas = [];
 
 // 3. Funciones de Petición y Notificaciones
 function showLoader() {
@@ -186,7 +190,8 @@ function renderizarCitas() {
   if (filtroTexto?.value) {
     const textoBuscado = filtroTexto.value.toLowerCase();
     citasFiltradas = citasFiltradas.filter(cita => 
-      cita.nombre.toLowerCase().includes(textoBuscado) ||
+      (cita.nombre || '').toLowerCase().includes(textoBuscado) ||
+      (cita.telefono || '').toLowerCase().includes(textoBuscado) ||
       (cita.tratamiento || '').toLowerCase().includes(textoBuscado)
     );
   }
@@ -200,6 +205,8 @@ function renderizarCitas() {
   if (badgePendiente) badgePendiente.textContent = `Pendiente: ${counts.Pendiente}`;
   if (badgeAtendida) badgeAtendida.textContent = `Atendida: ${counts.Atendida}`;
   if (badgeCancelada) badgeCancelada.textContent = `Cancelada: ${counts.Cancelada}`;
+
+  citasActualesRenderizadas = citasFiltradas;
 
   tbody.innerHTML = '';
   if (citasFiltradas.length === 0) {
@@ -255,6 +262,24 @@ function renderizarCitas() {
 async function cargarYRenderizarCitas() {
   todasLasCitas = await cargarCitasDeAPI();
   renderizarCitas();
+}
+
+function exportarCSV(citas) {
+  const headers = ['Nombre','Teléfono','Tratamiento','Fecha','Hora','Estado'];
+  const rows = citas.map(c => [c.nombre||'', c.telefono||'', c.tratamiento||'', c.fecha||'', c.hora||'', c.estado||'']);
+  const csv = [headers, ...rows]
+    .map(r => r.map(v => '"' + String(v).replace(/"/g,'""') + '"').join(','))
+    .join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const today = new Date().toISOString().split('T')[0];
+  a.download = `citas-${today}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
 cargarYRenderizarCitas();
