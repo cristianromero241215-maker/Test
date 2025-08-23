@@ -172,6 +172,9 @@ function validateField(input) {
         case 'tratamiento':
             if (getEl('esPrimerCita')?.value === 'No' && !value) return 'Selecciona un tratamiento.';
             return '';
+        case 'cp':
+            if (value && !/^\d{5}$/.test(value)) return 'El CP debe tener 5 dígitos.';
+            return '';
         default:
             return '';
     }
@@ -191,7 +194,7 @@ function wireFieldValidation(ids) {
     });
 }
 
-wireFieldValidation(['nombre','telefono','email','fecha','hora','esPrimerCita','motivo_sintomas','tratamiento']);
+wireFieldValidation(['nombre','telefono','email','fecha','hora','esPrimerCita','motivo_sintomas','tratamiento','cp']);
 
 // Enviar el formulario
 if (form) {
@@ -216,7 +219,7 @@ if (form) {
     payload.cp = (payload.cp || '').trim();
 
     // Validación inline completa antes de continuar
-    const inputsToCheck = ['nombre','telefono','email','fecha','hora','esPrimerCita','motivo_sintomas','tratamiento']
+    const inputsToCheck = ['nombre','telefono','email','fecha','hora','esPrimerCita','motivo_sintomas','tratamiento','cp']
       .map(getEl)
       .filter(Boolean);
     let firstInvalid = null;
