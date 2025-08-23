@@ -8,19 +8,20 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="preload" as="image" href="assets/logo.png" fetchpriority="high" />
+  <link rel="stylesheet" href="style.min.css" />
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
       <a class="logo" href="#inicio" aria-label="Inicio de la página">
-        <img src="assets/logo.png" alt="Logo de la Clínica Dental Dra. Lesly Vázquez" />
+        <img src="assets/logo.png" alt="Logo de la Clínica Dental Dra. Lesly Vázquez" fetchpriority="high" decoding="async" />
         <span>Dra. Lesly Vázquez</span>
       </a>
       <nav class="main-nav" aria-label="Principal">
         <a href="#inicio" class="active">Inicio</a>
         <a href="servicios.html">Servicios</a>
-        <a href="signos-sintomas.html">Signos y Síntomas</a>
+        <a href="sintomas.html">Signos y Síntomas</a>
         <a href="#agendar-cita">Agendar</a>
         <a href="#contacto">Contacto</a>
         <a href="admin/login.html" class="admin-link">Admin</a>
@@ -37,7 +38,7 @@
           <p>Odontología integral con un trato humano y profesional. Agenda tu cita con la Dra. Lesly Vázquez.</p>
           <div class="hero-cta">
             <a href="#agendar-cita" class="btn btn-primary">Agendar cita</a>
-            <a href="https://wa.me/523323303334" target="_blank" class="btn btn-outline"><img class="icon" src="assets/whatsapp.png" alt="Ícono de WhatsApp" /> WhatsApp</a>
+            <a href="https://wa.me/523323303334" target="_blank" class="btn btn-outline"><img class="icon" src="assets/whatsapp.png" alt="Ícono de WhatsApp" loading="lazy" decoding="async" /> WhatsApp</a>
           </div>
         </div>
         <div class="hero-art" aria-hidden="true"></div>
@@ -78,11 +79,23 @@
 
     <section id="agendar-cita" class="cita-section container">
   <h2>Agendar Cita</h2>
+  <div class="cita-card">
   <form id="formCita" class="cita-form">
     <div class="form-row">
       <div class="form-group">
+        <label for="nombre">Nombre completo</label>
+        <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre completo" autocomplete="name" />
+      </div>
+      <div class="form-group">
+                  <label for="telefono">Teléfono</label>
+          <input type="tel" id="telefono" name="telefono" required placeholder="(###) ### ####" inputmode="numeric" pattern="\(?\d{3}\)?\s?\d{3}\s?\d{4}" title="Ingresa 10 dígitos" autocomplete="tel" />
+          <div class="help-text">Formato sugerido: (###) ### ####</div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" id="email" name="email" required placeholder="tucorreo@dominio.com" />
+        <input type="email" id="email" name="email" required placeholder="tucorreo@dominio.com" autocomplete="email" />
       </div>
       <div class="form-group">
         <label for="esPrimerCita">¿Es primer cita?</label>
@@ -146,12 +159,14 @@
       </div>
     </div>
 
+
     <button type="submit" class="btn btn-primary">
       <span class="btn-text">📅 Reservar Cita</span>
       <span class="btn-loader" aria-hidden="true"></span>
     </button>
   </form>
   <div id="mensaje" class="mensaje"></div>
+  </div>
 </section>
 
     <section id="contacto" class="contact-section">
@@ -161,13 +176,13 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <div class="brand">
-        <img src="assets/logo.png" alt="Logo de la clínica" />
+        <img src="assets/logo.png" alt="Logo de la clínica" loading="lazy" decoding="async" />
         <div><strong>Dra. Lesly Vázquez</strong><br /><small>© 2025 Todos los derechos reservados</small></div>
       </div>
       <nav class="footer-nav">
         <a href="#inicio">Inicio</a>
         <a href="servicios.html">Servicios</a>
-        <a href="signos-sintomas.html">Signos y Síntomas</a>
+        <a href="sintomas.html">Signos y Síntomas</a>
         <a href="admin/login.html">Admin</a>
       </nav>
       <div class="social">
@@ -176,7 +191,7 @@
     </div>
   </footer>
 
-  <a href="https://wa.me/523323303334" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp"><img src="assets/whatsapp.png" alt="Ícono de WhatsApp" /></a>
+  <a href="https://wa.me/523323303334" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp"><img src="assets/whatsapp.png" alt="Ícono de WhatsApp" loading="lazy" decoding="async" /></a>
 
   <script src="js/main.js"></script>
 </body>

@@ -1,12 +1,88 @@
-// js/admin/dashboard.js
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Citas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body class="dashboard">
+  <header class="dash-header">
+    <div class="dash-wrap">
+      <div class="brand">
+        <img src="../assets/logo.png" alt="Logo" />
+        <strong>Panel de Administración</strong>
+      </div>
+      <nav class="dash-nav">
+        <a href="dashboard.html" class="active">Citas</a>
+        <a href="expediente.html">Expedientes</a>
+        <button id="themeToggle" class="btn btn-icon" title="Tema"><span class="theme-toggle-icon">🌓</span></button>
+        <button id="logoutBtn" class="btn btn-outline">Salir</button>
+      </nav>
+    </div>
+  </header>
 
+  <main class="dash-main">
+    <div class="toolbar">
+      <div class="filter-group">
+        <label for="filtroFecha">Fecha</label>
+        <input type="date" id="filtroFecha" />
+      </div>
+      <div class="filter-group">
+        <label for="filtroEstado">Estado</label>
+        <select id="filtroEstado">
+          <option value="todos">Todos</option>
+          <option value="Pendiente">Pendiente</option>
+          <option value="Atendida">Atendida</option>
+          <option value="Cancelada">Cancelada</option>
+        </select>
+      </div>
+      <div class="filter-group" style="flex:1;min-width:240px">
+        <input id="filtroTexto" placeholder="Buscar por nombre o tratamiento" style="width:100%" />
+      </div>
+      <div class="status-badges">
+        <span id="badgePendiente" class="badge badge-pendiente">Pendiente: 0</span>
+        <span id="badgeAtendida" class="badge badge-atendida">Atendida: 0</span>
+        <span id="badgeCancelada" class="badge badge-cancelada">Cancelada: 0</span>
+      </div>
+      <button id="refrescar" class="btn btn-icon" title="Refrescar">
+        <span class="btn-icon-inner">⟳</span>
+      </button>
+      <button id="exportCsv" class="btn btn-outline" title="Exportar CSV">Exportar CSV</button>
+    </div>
+
+    <div class="table-wrap">
+      <table id="citasTable">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Teléfono</th>
+            <th>Tratamiento</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="loadingOverlay" class="loading-overlay">
+      <div class="loader"></div>
+      <p>Cargando...</p>
+    </div>
+    <div id="notification-container"></div>
+  </main>
+
+  <script>
 // URL de la API de Google Apps Script para el panel de administración
 const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbwgqdBf_7riK9KS_qF3RDqKKJwG2SMMDUDoTGIiB_Xvpzikeh1xxELjC3liBwZ2FDEjkA/exec";
 
-// =========================================
 // 1. Lógica de Autenticación
-// =========================================
-
 if (localStorage.getItem('isAdminLoggedIn') !== 'true') {
   window.location.href = 'login.html';
 }
@@ -16,9 +92,7 @@ document.getElementById('logoutBtn')?.addEventListener('click', () => {
   window.location.href = 'login.html';
 });
 
-// =========================================
 // 2. Elementos del DOM y Eventos
-// =========================================
 const tbody = document.querySelector('#citasTable tbody');
 const filtroFecha = document.getElementById('filtroFecha');
 const filtroTexto = document.getElementById('filtroTexto');
@@ -26,18 +100,33 @@ const filtroEstado = document.getElementById('filtroEstado');
 const refreshBtn = document.getElementById('refrescar');
 const refreshIcon = refreshBtn?.querySelector('.btn-icon-inner');
 const loaderOverlay = document.getElementById('loadingOverlay');
+const badgePendiente = document.getElementById('badgePendiente');
+const badgeAtendida = document.getElementById('badgeAtendida');
+const badgeCancelada = document.getElementById('badgeCancelada');
+const exportBtn = document.getElementById('exportCsv');
 
 filtroFecha?.addEventListener('change', renderizarCitas);
 filtroTexto?.addEventListener('input', renderizarCitas);
 filtroEstado?.addEventListener('change', renderizarCitas);
 refreshBtn?.addEventListener('click', cargarYRenderizarCitas);
+exportBtn?.addEventListener('click', () => exportarCSV(citasActualesRenderizadas));
+
+const root = document.documentElement;
+const themeToggle = document.getElementById('themeToggle');
+// init theme from localStorage
+const savedTheme = localStorage.getItem('adminTheme');
+if (savedTheme) root.setAttribute('data-theme', savedTheme);
+
+themeToggle?.addEventListener('click', () => {
+  const current = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', current);
+  localStorage.setItem('adminTheme', current);
+});
 
 let todasLasCitas = [];
+let citasActualesRenderizadas = [];
 
-// =========================================
 // 3. Funciones de Petición y Notificaciones
-// =========================================
-
 function showLoader() {
   if (loaderOverlay) loaderOverlay.style.display = 'flex';
   refreshIcon?.classList.add('spin');
@@ -55,9 +144,7 @@ function showNotification(message, type = 'success') {
   notification.className = `notification ${type}`;
   notification.textContent = message;
   container.appendChild(notification);
-  setTimeout(() => {
-    notification.remove();
-  }, 3000); // 3 segundos
+  setTimeout(() => { notification.remove(); }, 3000);
 }
 
 async function cargarCitasDeAPI() {
@@ -77,20 +164,9 @@ async function cargarCitasDeAPI() {
 }
 
 async function actualizarEstadoEnAPI(cita, nuevoEstado) {
-  const payload = {
-    action: 'updateStatus',
-    nombre: cita.nombre,
-    fecha: cita.fecha,
-    hora: cita.hora,
-    estado: nuevoEstado,
-  };
-
+  const payload = { action: 'updateStatus', nombre: cita.nombre, fecha: cita.fecha, hora: cita.hora, estado: nuevoEstado };
   try {
-    const res = await fetch(SHEETS_API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
+    const res = await fetch(SHEETS_API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     const data = await res.json();
     if (data.ok) {
       showNotification('Estado actualizado correctamente.', 'success');
@@ -103,30 +179,34 @@ async function actualizarEstadoEnAPI(cita, nuevoEstado) {
   }
 }
 
-// =========================================
-// 4. Funciones de Renderizado y Lógica
-// =========================================
-
+// 4. Renderizado
 function renderizarCitas() {
   if (!tbody) return;
 
   let citasFiltradas = todasLasCitas;
-
   if (filtroFecha?.value) {
     citasFiltradas = citasFiltradas.filter(cita => cita.fecha === filtroFecha.value);
   }
-
   if (filtroTexto?.value) {
     const textoBuscado = filtroTexto.value.toLowerCase();
     citasFiltradas = citasFiltradas.filter(cita => 
-      cita.nombre.toLowerCase().includes(textoBuscado) ||
-      cita.tratamiento.toLowerCase().includes(textoBuscado)
+      (cita.nombre || '').toLowerCase().includes(textoBuscado) ||
+      (cita.telefono || '').toLowerCase().includes(textoBuscado) ||
+      (cita.tratamiento || '').toLowerCase().includes(textoBuscado)
     );
   }
-
   if (filtroEstado?.value && filtroEstado.value !== 'todos') {
     citasFiltradas = citasFiltradas.filter(cita => cita.estado === filtroEstado.value);
   }
+
+  // Actualizar badges de estado
+  const counts = { Pendiente: 0, Atendida: 0, Cancelada: 0 };
+  citasFiltradas.forEach(c => { if (counts[c.estado] !== undefined) counts[c.estado]++; });
+  if (badgePendiente) badgePendiente.textContent = `Pendiente: ${counts.Pendiente}`;
+  if (badgeAtendida) badgeAtendida.textContent = `Atendida: ${counts.Atendida}`;
+  if (badgeCancelada) badgeCancelada.textContent = `Cancelada: ${counts.Cancelada}`;
+
+  citasActualesRenderizadas = citasFiltradas;
 
   tbody.innerHTML = '';
   if (citasFiltradas.length === 0) {
@@ -139,14 +219,14 @@ function renderizarCitas() {
   citasFiltradas.forEach(cita => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${cita.nombre}</td>
-      <td>${cita.telefono}</td>
-      <td>${cita.tratamiento}</td>
-      <td>${cita.fecha}</td>
-      <td>${cita.hora}</td>
+      <td>${cita.nombre || ''}</td>
+      <td>${cita.telefono || ''}</td>
+      <td>${cita.tratamiento || ''}</td>
+      <td>${cita.fecha || ''}</td>
+      <td>${cita.hora || ''}</td>
       <td></td>
     `;
-    
+
     const tdEstado = tr.children[5];
     const selectEstado = document.createElement('select');
     const estados = ['Pendiente', 'Atendida', 'Cancelada'];
@@ -154,13 +234,11 @@ function renderizarCitas() {
       const option = document.createElement('option');
       option.value = estado;
       option.textContent = estado;
-      if (estado === cita.estado) {
-        option.selected = true;
-      }
+      if (estado === cita.estado) option.selected = true;
       selectEstado.appendChild(option);
     });
 
-    const estadoClase = cita.estado.toLowerCase().replace('á', 'a');
+    const estadoClase = (cita.estado || 'pendiente').toLowerCase().replace('á', 'a');
     selectEstado.classList.add(`select-status-${estadoClase}`);
 
     selectEstado.addEventListener('change', () => {
@@ -186,4 +264,25 @@ async function cargarYRenderizarCitas() {
   renderizarCitas();
 }
 
+function exportarCSV(citas) {
+  const headers = ['Nombre','Teléfono','Tratamiento','Fecha','Hora','Estado'];
+  const rows = citas.map(c => [c.nombre||'', c.telefono||'', c.tratamiento||'', c.fecha||'', c.hora||'', c.estado||'']);
+  const csv = [headers, ...rows]
+    .map(r => r.map(v => '"' + String(v).replace(/"/g,'""') + '"').join(','))
+    .join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const today = new Date().toISOString().split('T')[0];
+  a.download = `citas-${today}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 cargarYRenderizarCitas();
+  </script>
+</body>
+</html>

@@ -8,20 +8,20 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-  <script src="js/main.js" defer></script>
+  <link rel="preload" as="image" href="assets/logo.png" fetchpriority="high" />
+  <link rel="stylesheet" href="style.min.css" />
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
       <a class="logo" href="index.html" aria-label="Inicio de la página">
-        <img src="assets/logo.png" alt="Logo de la Clínica Dental Dra. Lesly Vázquez" />
+        <img src="assets/logo.png" alt="Logo de la Clínica Dental Dra. Lesly Vázquez" fetchpriority="high" decoding="async" />
         <span>Dra. Lesly Vázquez</span>
       </a>
       <nav class="main-nav" aria-label="Principal">
         <a href="index.html">Inicio</a>
         <a href="servicios.html">Servicios</a>
-        <a href="signos-sintomas.html" class="active">Signos y Síntomas</a>
+        <a href="sintomas.html" class="active">Signos y Síntomas</a>
         <a href="index.html#agendar-cita">Agendar</a>
         <a href="index.html#contacto">Contacto</a>
         <a href="admin/login.html" class="admin-link">Admin</a>
@@ -104,19 +104,20 @@
       <nav class="footer-nav">
         <a href="index.html">Inicio</a>
         <a href="servicios.html">Servicios</a>
-        <a href="signos-sintomas.html">Signos y Síntomas</a>
+        <a href="sintomas.html">Signos y Síntomas</a>
         <a href="admin/login.html">Admin</a>
       </nav>
       <div class="social">
         <a href="https://www.instagram.com/dra.lesly_vazquez" target="_blank">
-          <img src="assets/instagram.png" alt="Instagram" />
+          <img src="assets/instagram.png" alt="Instagram" loading="lazy" decoding="async" />
         </a>
       </div>
     </div>
   </footer>
 
   <a href="https://wa.me/523323303334" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
-    <img src="assets/whatsapp.png" alt="Ícono de WhatsApp" />
+    <img src="assets/whatsapp.png" alt="Ícono de WhatsApp" loading="lazy" decoding="async" />
   </a>
+  <script src="js/main.js"></script>
 </body>
 </html>
