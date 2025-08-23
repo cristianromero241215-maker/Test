@@ -8,7 +8,7 @@ const firebaseConfig = {
   projectId: "odontoles-d926a",
   storageBucket: "odontoles-d926a.firebasestorage.app",
   messagingSenderId: "736431544596",
-  appId: "1:736431544596:web:70333f4f830582fa2e8a01",
+  appId: "1:736431544596:web:e466e5820ff23b772e8a01"
 };
 
 // =========================================
