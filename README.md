@@ -8,7 +8,7 @@ Este proyecto es el sitio web de una clínica dental, diseñado para ser un punt
 
 -   **Página Principal (`index.html`):** Muestra los servicios principales, una breve introducción y un formulario para agendar citas directamente.
 -   **Página de Servicios (`servicios.html`):** Proporciona información detallada sobre los tratamientos ofrecidos, incluyendo beneficios y preguntas frecuentes.
--   **Página de Signos y Síntomas (`signos-sintomas.html`):** Ayuda a los pacientes a identificar problemas dentales comunes.
+-   **Página de Signos y Síntomas (`sintomas.html`):** Ayuda a los pacientes a identificar problemas dentales comunes.
 -   **Formulario de Citas:** Se integra con una API de Google Apps Script para gestionar citas y disponibilidad en tiempo real.
 -   **Portal Administrativo:** Permite a la clínica gestionar las citas y los expedientes clínicos de los pacientes, con un sistema de autenticación seguro.
 -   **Diseño Responsivo:** Adaptado para una experiencia de usuario óptima en dispositivos móviles, tablets y computadoras de escritorio.
