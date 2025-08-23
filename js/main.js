@@ -118,13 +118,88 @@ if (fechaInput) {
   });
 }
 
+function getEl(id) { return document.getElementById(id); }
+
+function showFieldError(input, message) {
+    const group = input.closest('.form-group');
+    if (!group) return;
+    let err = group.querySelector('.field-error');
+    if (!err) {
+        err = document.createElement('div');
+        err.className = 'field-error';
+        group.appendChild(err);
+    }
+    group.classList.add('has-error');
+    input.setAttribute('aria-invalid', 'true');
+    err.textContent = message;
+}
+
+function clearFieldError(input) {
+    const group = input.closest('.form-group');
+    if (!group) return;
+    const err = group.querySelector('.field-error');
+    if (err) err.textContent = '';
+    group.classList.remove('has-error');
+    input.removeAttribute('aria-invalid');
+}
+
+function validateField(input) {
+    const id = input.id;
+    const value = (input.value || '').trim();
+    switch (id) {
+        case 'nombre':
+            if (value.length < 3) return 'Ingresa tu nombre (mín. 3 caracteres).';
+            return '';
+        case 'telefono':
+            const digits = value.replace(/\D/g, '');
+            if (digits.length !== 10) return 'Ingresa un teléfono de 10 dígitos.';
+            return '';
+        case 'email':
+            if (!input.checkValidity()) return 'Ingresa un email válido.';
+            return '';
+        case 'fecha':
+            if (!value) return 'Selecciona una fecha.';
+            return '';
+        case 'hora':
+            if (!value) return 'Selecciona una hora.';
+            return '';
+        case 'esPrimerCita':
+            if (!value) return 'Selecciona una opción.';
+            return '';
+        case 'motivo_sintomas':
+            if (getEl('esPrimerCita')?.value === 'Si' && value.length < 5) return 'Describe tus síntomas.';
+            return '';
+        case 'tratamiento':
+            if (getEl('esPrimerCita')?.value === 'No' && !value) return 'Selecciona un tratamiento.';
+            return '';
+        default:
+            return '';
+    }
+}
+
+function wireFieldValidation(ids) {
+    ids.forEach((id) => {
+        const el = getEl(id);
+        if (!el) return;
+        const handler = () => {
+            const msg = validateField(el);
+            if (msg) showFieldError(el, msg); else clearFieldError(el);
+        };
+        el.addEventListener('blur', handler);
+        el.addEventListener('input', handler);
+        el.addEventListener('change', handler);
+    });
+}
+
+wireFieldValidation(['nombre','telefono','email','fecha','hora','esPrimerCita','motivo_sintomas','tratamiento']);
+
 // Enviar el formulario
 if (form) {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     if (mensajeBox) {
-      mensajeBox.style.display = "none";
+        mensajeBox.style.display = "none";
     }
 
     const formData = new FormData(form);
@@ -134,37 +209,43 @@ if (form) {
     payload.telefono = (payload.telefono || "").replace(/\D/g, "");
     payload.email = (payload.email || "").trim();
 
-    if (!payload.nombre || payload.nombre.length < 3) {
-      showError("Por favor, ingresa tu nombre completo.");
+    // Validación inline completa antes de continuar
+    const inputsToCheck = ['nombre','telefono','email','fecha','hora','esPrimerCita','motivo_sintomas','tratamiento']
+      .map(getEl)
+      .filter(Boolean);
+    let firstInvalid = null;
+    inputsToCheck.forEach((input) => {
+      const msg = validateField(input);
+      if (msg) {
+        showFieldError(input, msg);
+        if (!firstInvalid) firstInvalid = input;
+      } else {
+        clearFieldError(input);
+      }
+    });
+    if (firstInvalid) {
+      firstInvalid.focus();
       return;
     }
-    if (!payload.telefono || payload.telefono.length !== 10) {
-      showError("Por favor, ingresa un teléfono válido de 10 dígitos.");
-      return;
+
+    if (btn) {
+      btn.classList.add("loading");
     }
-    if (!payload.fecha) {
-      showError("Por favor, selecciona una fecha.");
-      return;
-    }
-    if (!payload.hora) {
-      showError("Por favor, selecciona una hora para la cita.");
-      return;
-    }
+
+    // Validaciones específicas adicionales (redundantes pero seguras)
     if (payload.esPrimerCita === 'Si' && !(payload.motivo_sintomas || '').trim()) {
       showError("Por favor, describe tus síntomas o motivo de la consulta.");
+      if (btn) btn.classList.remove("loading");
       return;
     }
     if (payload.esPrimerCita === 'No' && !payload.tratamiento) {
       showError("Por favor, selecciona un tratamiento.");
+      if (btn) btn.classList.remove("loading");
       return;
     }
 
     payload.action = 'create';
     payload.estado = 'Pendiente';
-
-    if (btn) {
-      btn.classList.add("loading");
-    }
 
     try {
       const res = await fetch(APPS_SCRIPT_URL, {

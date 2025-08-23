@@ -650,3 +650,26 @@ h2 {
 .btn-primary:active::after {
   opacity: 1;
 }
+
+/* Estados de error y ayuda en formulario */
+.form-group { position: relative; }
+.field-error {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 6px;
+  line-height: 1.4;
+  animation: fadeIn 0.2s ease-in-out;
+}
+.has-error input,
+.has-error select,
+.has-error textarea {
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.12) !important;
+}
+
+/* Texto de ayuda opcional */
+.help-text {
+  color: var(--gris);
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
