@@ -11,7 +11,6 @@ const firebaseConfig = {
   storageBucket: "odontoles-d926a.firebasestorage.app",
   messagingSenderId: "736431544596",
   appId: "1:736431544596:web:70333f4f830582fa2e8a01",
-  measurementId: "G-58HNM8MTNJ"
 };
 
 // =========================================
