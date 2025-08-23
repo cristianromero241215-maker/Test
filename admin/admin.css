@@ -331,3 +331,53 @@ tbody tr:hover {
   .toolbar .filter-group { justify-content: space-between; }
   .toolbar input, .toolbar select { width: 100%; }
 }
+
+/* Modo oscuro */
+:root[data-theme="dark"] {
+  --white: #0f172a;
+  --light-bg: #0b1220;
+  --text-color: #e5e7eb;
+  --gray-text: #94a3b8;
+  --border: #243041;
+  --shadow: 0 14px 40px rgba(0,0,0,0.45);
+}
+
+:root[data-theme="dark"] .dash-header {
+  background: #0b1220;
+}
+
+:root[data-theme="dark"] thead th {
+  background: #111a2e;
+}
+
+:root[data-theme="dark"] tbody tr:nth-child(even) {
+  background: #0e182b;
+}
+
+:root[data-theme="dark"] tbody tr:hover {
+  background: #12203a;
+}
+
+/* Badges de conteo */
+.status-badges {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-left: auto;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.badge-pendiente { background: var(--pending-color); color: #111; }
+.badge-atendida { background: var(--success-color); color: #fff; }
+.badge-cancelada { background: var(--error-color); color: #fff; }
+
+/* Toggle de tema */
+.theme-toggle-icon { font-size: 1rem; }

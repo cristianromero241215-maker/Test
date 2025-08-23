@@ -19,6 +19,7 @@
       <nav class="dash-nav">
         <a href="dashboard.html">Citas</a>
         <a href="expediente.html" class="active">Expedientes</a>
+        <button id="themeToggle" class="btn btn-icon" title="Tema"><span class="theme-toggle-icon">🌓</span></button>
         <button id="logoutBtn" class="btn btn-outline">Salir</button>
       </nav>
     </div>
@@ -80,6 +81,17 @@ function showNotification(message, type = 'success') {
 
 const form = document.getElementById('expedienteForm');
 const submitBtn = form.querySelector('.btn-primary');
+
+const root = document.documentElement;
+const themeToggle = document.getElementById('themeToggle');
+const savedTheme = localStorage.getItem('adminTheme');
+if (savedTheme) root.setAttribute('data-theme', savedTheme);
+
+themeToggle?.addEventListener('click', () => {
+  const current = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', current);
+  localStorage.setItem('adminTheme', current);
+});
 
 form?.addEventListener('submit', async (e) => {
   e.preventDefault();

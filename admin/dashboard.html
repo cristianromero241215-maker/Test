@@ -19,6 +19,7 @@
       <nav class="dash-nav">
         <a href="dashboard.html" class="active">Citas</a>
         <a href="expediente.html">Expedientes</a>
+        <button id="themeToggle" class="btn btn-icon" title="Tema"><span class="theme-toggle-icon">🌓</span></button>
         <button id="logoutBtn" class="btn btn-outline">Salir</button>
       </nav>
     </div>
@@ -39,8 +40,13 @@
           <option value="Cancelada">Cancelada</option>
         </select>
       </div>
-      <div class="filter-group">
-        <input id="filtroTexto" placeholder="Buscar por nombre o tratamiento" />
+      <div class="filter-group" style="flex:1;min-width:240px">
+        <input id="filtroTexto" placeholder="Buscar por nombre o tratamiento" style="width:100%" />
+      </div>
+      <div class="status-badges">
+        <span id="badgePendiente" class="badge badge-pendiente">Pendiente: 0</span>
+        <span id="badgeAtendida" class="badge badge-atendida">Atendida: 0</span>
+        <span id="badgeCancelada" class="badge badge-cancelada">Cancelada: 0</span>
       </div>
       <button id="refrescar" class="btn btn-icon" title="Refrescar">
         <span class="btn-icon-inner">⟳</span>
@@ -93,11 +99,26 @@ const filtroEstado = document.getElementById('filtroEstado');
 const refreshBtn = document.getElementById('refrescar');
 const refreshIcon = refreshBtn?.querySelector('.btn-icon-inner');
 const loaderOverlay = document.getElementById('loadingOverlay');
+const badgePendiente = document.getElementById('badgePendiente');
+const badgeAtendida = document.getElementById('badgeAtendida');
+const badgeCancelada = document.getElementById('badgeCancelada');
 
 filtroFecha?.addEventListener('change', renderizarCitas);
 filtroTexto?.addEventListener('input', renderizarCitas);
 filtroEstado?.addEventListener('change', renderizarCitas);
 refreshBtn?.addEventListener('click', cargarYRenderizarCitas);
+
+const root = document.documentElement;
+const themeToggle = document.getElementById('themeToggle');
+// init theme from localStorage
+const savedTheme = localStorage.getItem('adminTheme');
+if (savedTheme) root.setAttribute('data-theme', savedTheme);
+
+themeToggle?.addEventListener('click', () => {
+  const current = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', current);
+  localStorage.setItem('adminTheme', current);
+});
 
 let todasLasCitas = [];
 
@@ -172,6 +193,13 @@ function renderizarCitas() {
   if (filtroEstado?.value && filtroEstado.value !== 'todos') {
     citasFiltradas = citasFiltradas.filter(cita => cita.estado === filtroEstado.value);
   }
+
+  // Actualizar badges de estado
+  const counts = { Pendiente: 0, Atendida: 0, Cancelada: 0 };
+  citasFiltradas.forEach(c => { if (counts[c.estado] !== undefined) counts[c.estado]++; });
+  if (badgePendiente) badgePendiente.textContent = `Pendiente: ${counts.Pendiente}`;
+  if (badgeAtendida) badgeAtendida.textContent = `Atendida: ${counts.Atendida}`;
+  if (badgeCancelada) badgeCancelada.textContent = `Cancelada: ${counts.Cancelada}`;
 
   tbody.innerHTML = '';
   if (citasFiltradas.length === 0) {
