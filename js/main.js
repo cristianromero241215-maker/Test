@@ -194,7 +194,7 @@ function wireFieldValidation(ids) {
     });
 }
 
-wireFieldValidation(['nombre','telefono','email','fecha','hora','esPrimerCita','motivo_sintomas','tratamiento','cp']);
+wireFieldValidation(['nombre','telefono','email','fecha','hora','esPrimerCita','motivo_sintomas','tratamiento']);
 
 // Enviar el formulario
 if (form) {
@@ -212,14 +212,10 @@ if (form) {
     payload.telefono = (payload.telefono || "").replace(/\D/g, "");
     payload.email = (payload.email || "").trim();
 
-    // Campos opcionales de domicilio
-    payload.direccion = (payload.direccion || '').trim();
-    payload.colonia = (payload.colonia || '').trim();
-    payload.ciudad = (payload.ciudad || '').trim();
-    payload.cp = (payload.cp || '').trim();
+
 
     // Validación inline completa antes de continuar
-    const inputsToCheck = ['nombre','telefono','email','fecha','hora','esPrimerCita','motivo_sintomas','tratamiento','cp']
+    const inputsToCheck = ['nombre','telefono','email','fecha','hora','esPrimerCita','motivo_sintomas','tratamiento']
       .map(getEl)
       .filter(Boolean);
     let firstInvalid = null;
