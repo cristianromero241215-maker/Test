@@ -63,7 +63,7 @@ body {
 .btn-primary {
   background: var(--rosa);
   color: #fff;
-  box-shadow: var(--shadow);
+  box-shadow: 0 8px 22px rgba(233,30,99,0.18);
 }
 
 .btn-primary:hover {
@@ -105,7 +105,7 @@ h2 {
   top: 0;
   z-index: 50;
   background: #fff;
-  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
 }
 
 .header-inner {
@@ -185,7 +185,7 @@ h2 {
 /* ========================================= */
 
 .hero {
-  padding: 80px 0 40px;
+  padding: 96px 0 56px;
   position: relative;
   overflow: hidden;
 }
@@ -203,10 +203,10 @@ h2 {
 }
 
 .hero-art {
-  height: 260px;
-  border-radius: 24px;
+  height: 240px;
+  border-radius: 20px;
   background: linear-gradient(135deg, #ffe5ef, #fff);
-  box-shadow: var(--shadow);
+  box-shadow: 0 8px 28px rgba(233, 30, 99, 0.12);
 }
 
 .bubbles::before,
@@ -251,23 +251,24 @@ h2 {
 .cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-top: 1rem;
+  gap: 1.2rem;
+  margin-top: 1.2rem;
 }
 
 .card {
   background: #fff;
-  padding: 1.1rem;
+  padding: 1.15rem 1.2rem;
   border-radius: 14px;
   text-decoration: none;
   color: inherit;
-  box-shadow: var(--shadow);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 10px 26px rgba(233,30,99,0.10);
+  border: 1px solid #fff2f7;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 36px rgba(233,30,99,0.14);
 }
 
 .service-block {
@@ -320,7 +321,7 @@ h2 {
 /* ========================================= */
 
 .cita-section {
-  padding: 50px 20px;
+  padding: 56px 20px;
   background: #fff;
   text-align: center;
 }
