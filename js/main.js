@@ -60,7 +60,7 @@ const cargarHorarios = async (dateStr) => {
   horaSelect.disabled = true;
 
   try {
-    const res = await fetch(`${APPS_SCRIPT_URL}?date=${encodeURIComponent(dateStr)}`);
+    const res = await fetch(`${APPS_SCRIPT_URL}?action=getHours&date=${encodeURIComponent(dateStr)}`);
     const data = await res.json();
     
     if (!Array.isArray(data.hours)) {
@@ -99,31 +99,47 @@ if (form) {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    if (horaSelect.value === "") {
-        if (mensajeBox) {
-            mensajeBox.textContent = "❌ Por favor, selecciona una hora para la cita.";
-            mensajeBox.className = "mensaje error";
-            mensajeBox.style.display = "block";
-        }
-        return;
-    }
-
     if (mensajeBox) {
-        mensajeBox.style.display = "none";
-    }
-    if (btn) {
-        btn.classList.add("loading");
+      mensajeBox.style.display = "none";
     }
 
-    const payload = Object.fromEntries(new FormData(form).entries());
-    
-    if (payload.esPrimerCita === 'Si' && !payload.motivo_sintomas.trim()) {
+    const formData = new FormData(form);
+    const payload = Object.fromEntries(formData.entries());
+
+    payload.nombre = (payload.nombre || "").trim();
+    payload.telefono = (payload.telefono || "").replace(/\D/g, "");
+    payload.email = (payload.email || "").trim();
+
+    if (!payload.nombre || payload.nombre.length < 3) {
+      showError("Por favor, ingresa tu nombre completo.");
+      return;
+    }
+    if (!payload.telefono || payload.telefono.length !== 10) {
+      showError("Por favor, ingresa un teléfono válido de 10 dígitos.");
+      return;
+    }
+    if (!payload.fecha) {
+      showError("Por favor, selecciona una fecha.");
+      return;
+    }
+    if (!payload.hora) {
+      showError("Por favor, selecciona una hora para la cita.");
+      return;
+    }
+    if (payload.esPrimerCita === 'Si' && !(payload.motivo_sintomas || '').trim()) {
       showError("Por favor, describe tus síntomas o motivo de la consulta.");
       return;
     }
     if (payload.esPrimerCita === 'No' && !payload.tratamiento) {
       showError("Por favor, selecciona un tratamiento.");
       return;
+    }
+
+    payload.action = 'create';
+    payload.estado = 'Pendiente';
+
+    if (btn) {
+      btn.classList.add("loading");
     }
 
     try {
