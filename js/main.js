@@ -317,3 +317,35 @@ if (btn) {
     btn.style.setProperty('--y', y + '%');
   });
 }
+
+// Input mask para teléfono (formatea como (###) ### #### mientras escribe)
+const telefonoInput = document.getElementById('telefono');
+if (telefonoInput) {
+  const formatPhone = (value) => {
+    const digits = value.replace(/\D/g, '').slice(0, 10);
+    const p1 = digits.slice(0, 3);
+    const p2 = digits.slice(3, 6);
+    const p3 = digits.slice(6, 10);
+    if (digits.length > 6) return `(${p1}) ${p2} ${p3}`;
+    if (digits.length > 3) return `(${p1}) ${p2}`;
+    if (digits.length > 0) return `(${p1}`;
+    return '';
+  };
+  telefonoInput.addEventListener('input', () => {
+    const start = telefonoInput.selectionStart;
+    const before = telefonoInput.value;
+    telefonoInput.value = formatPhone(before);
+  });
+}
+
+// Normalización de fecha (solo si el navegador no soporta bien input date)
+const fechaInputEl = document.getElementById('fecha');
+if (fechaInputEl) {
+  fechaInputEl.addEventListener('blur', () => {
+    const v = (fechaInputEl.value || '').trim();
+    // Acepta YYYY/MM/DD o YYYY.MM.DD y normaliza a YYYY-MM-DD
+    if (/^\d{4}[\/.]\d{2}[\/.]\d{2}$/.test(v)) {
+      fechaInputEl.value = v.replace(/[\/.]/g, '-');
+    }
+  });
+}

@@ -86,8 +86,9 @@
         <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre completo" />
       </div>
       <div class="form-group">
-        <label for="telefono">Teléfono</label>
-        <input type="tel" id="telefono" name="telefono" required placeholder="10 dígitos" pattern="[0-9]{10}" />
+                  <label for="telefono">Teléfono</label>
+          <input type="tel" id="telefono" name="telefono" required placeholder="(###) ### ####" inputmode="numeric" pattern="\(?\d{3}\)?\s?\d{3}\s?\d{4}" title="Ingresa 10 dígitos" />
+          <div class="help-text">Formato sugerido: (###) ### ####</div>
       </div>
     </div>
     <div class="form-row">
