@@ -558,3 +558,95 @@ h2 {
     margin: 0.5rem 0;
   }
 }
+
+.cita-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.cita-card::before,
+.cita-card::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(30px);
+  opacity: 0.25;
+  z-index: -1;
+}
+
+.cita-card::before {
+  width: 180px;
+  height: 180px;
+  background: #ffd1e2;
+  top: -50px;
+  right: -40px;
+}
+
+.cita-card::after {
+  width: 220px;
+  height: 220px;
+  background: #ffe0ed;
+  bottom: -60px;
+  left: -40px;
+}
+
+/* Microinteracciones inputs */
+.form-group input,
+.form-group select,
+.form-group textarea {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.08s ease;
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+  border-color: #ccc;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  transform: translateY(-1px);
+}
+
+/* Transiciones suaves para secciones condicionales */
+#primerCitaCampos,
+#citaSeguimientoCampos {
+  transition: grid-template-rows 0.3s ease, opacity 0.3s ease;
+}
+
+.cita-section .hidden {
+  display: block !important;
+  overflow: hidden;
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
+.cita-section .visible {
+  display: block !important;
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+/* Botón con sutil ripple */
+.btn-primary {
+  isolation: isolate;
+}
+
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--x,50%) var(--y,50%), rgba(255,255,255,0.35), transparent 40%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.btn-primary:active::after {
+  opacity: 1;
+}

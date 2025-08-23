@@ -35,18 +35,42 @@ if (fechaInput) {
 if (esPrimerCitaSelect) {
   esPrimerCitaSelect.addEventListener("change", (e) => {
     if (e.target.value === "Si") {
-      primerCitaCampos.style.display = "block";
-      citaSeguimientoCampos.style.display = "none";
+      if (primerCitaCampos) {
+        primerCitaCampos.classList.remove('hidden');
+        primerCitaCampos.classList.add('visible');
+        primerCitaCampos.style.display = "block";
+      }
+      if (citaSeguimientoCampos) {
+        citaSeguimientoCampos.classList.remove('visible');
+        citaSeguimientoCampos.classList.add('hidden');
+        citaSeguimientoCampos.style.display = "none";
+      }
       document.getElementById("motivo_sintomas").required = true;
       document.getElementById("tratamiento").required = false;
     } else if (e.target.value === "No") {
-      primerCitaCampos.style.display = "none";
-      citaSeguimientoCampos.style.display = "block";
+      if (primerCitaCampos) {
+        primerCitaCampos.classList.remove('visible');
+        primerCitaCampos.classList.add('hidden');
+        primerCitaCampos.style.display = "none";
+      }
+      if (citaSeguimientoCampos) {
+        citaSeguimientoCampos.classList.remove('hidden');
+        citaSeguimientoCampos.classList.add('visible');
+        citaSeguimientoCampos.style.display = "block";
+      }
       document.getElementById("motivo_sintomas").required = false;
       document.getElementById("tratamiento").required = true;
     } else {
-      primerCitaCampos.style.display = "none";
-      citaSeguimientoCampos.style.display = "none";
+      if (primerCitaCampos) {
+        primerCitaCampos.classList.remove('visible');
+        primerCitaCampos.classList.add('hidden');
+        primerCitaCampos.style.display = "none";
+      }
+      if (citaSeguimientoCampos) {
+        citaSeguimientoCampos.classList.remove('visible');
+        citaSeguimientoCampos.classList.add('hidden');
+        citaSeguimientoCampos.style.display = "none";
+      }
       document.getElementById("motivo_sintomas").required = false;
       document.getElementById("tratamiento").required = false;
     }
@@ -201,3 +225,14 @@ document.querySelectorAll('.main-nav a, .logo, .footer-nav a').forEach(link => {
         }
     });
 });
+
+// Ripple coords for button
+if (btn) {
+  btn.addEventListener('pointerdown', (e) => {
+    const rect = btn.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    btn.style.setProperty('--x', x + '%');
+    btn.style.setProperty('--y', y + '%');
+  });
+}
