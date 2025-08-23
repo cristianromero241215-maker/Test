@@ -2,25 +2,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
-const loginForm = document.getElementById("loginForm");
-const errorMsg = document.getElementById("errorMsg");
-
-loginForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    // Redirigir al panel de administrador
-    window.location.href = "/pages/admin-dashboard.html";
-  } catch (error) {
-    console.error("Error al iniciar sesión:", error);
-    errorMsg.textContent = "Correo o contraseña incorrectos.";
-  }
-});
-
 // Tu configuración de Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyADnESASv56RskkEVgt-VxPxUu3IwIWVwQ",
