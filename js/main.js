@@ -172,9 +172,6 @@ function validateField(input) {
         case 'tratamiento':
             if (getEl('esPrimerCita')?.value === 'No' && !value) return 'Selecciona un tratamiento.';
             return '';
-        case 'cp':
-            if (value && !/^\d{5}$/.test(value)) return 'El CP debe tener 5 dígitos.';
-            return '';
         default:
             return '';
     }
