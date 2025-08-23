@@ -30,7 +30,8 @@ body {
   font-family: Roboto, system-ui, -apple-system, sans-serif;
   color: var(--text);
   background: var(--bg);
-  line-height: 1.6;
+  line-height: 1.7;
+  letter-spacing: 0.1px;
 }
 
 .container {
@@ -85,15 +86,22 @@ body {
 h1, h2, h3 {
   font-family: Montserrat, sans-serif;
   margin-top: 0;
+  letter-spacing: 0.2px;
 }
 
 h1 {
+  font-weight: 700;
   font-size: clamp(28px, 5vw, 46px);
   margin: 0 0 0.6rem;
 }
 
 h2 {
+  font-weight: 600;
   font-size: clamp(22px, 4vw, 32px);
+}
+
+h3 {
+  font-weight: 600;
 }
 
 /* ========================================= */
@@ -538,6 +546,13 @@ h2 {
   .main-nav.open {
     display: flex;
   }
+  /* compacto móvil */
+  .header-inner { padding: 0.5rem 0; }
+  .hero { padding: 80px 0 40px; }
+  .cards { gap: 0.9rem; }
+  .card { padding: 1rem; }
+  .service-block { padding: 0.8rem; }
+  .cita-section { padding: 44px 16px; }
 }
 
 @media (max-width: 600px) {
