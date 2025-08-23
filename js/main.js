@@ -80,30 +80,44 @@ if (esPrimerCitaSelect) {
 // Cargar horas disponibles al cambiar la fecha
 const cargarHorarios = async (dateStr) => {
   if (!horaSelect) return;
-  horaSelect.innerHTML = "<option>Cargando...</option>";
+  horaSelect.innerHTML = '<option>Cargando...</option>';
   horaSelect.disabled = true;
 
   try {
-    const res = await fetch(`${APPS_SCRIPT_URL}?action=getHours&date=${encodeURIComponent(dateStr)}`);
-    const data = await res.json();
-    
-    if (!Array.isArray(data.hours)) {
-      throw new Error("Respuesta inválida del servidor.");
+    const url = `${APPS_SCRIPT_URL}?action=getHours&date=${encodeURIComponent(dateStr)}`;
+    const res = await fetch(url, { redirect: 'follow' });
+
+    // Algunas implementaciones de Apps Script devuelven 302 con una página intermedia.
+    // Hacemos una lectura de texto y tratamos de parsear a JSON de forma segura.
+    const text = await res.text();
+    let data = {};
+    try { data = JSON.parse(text); } catch (_) { data = {}; }
+
+    // Normalizamos la posible forma de respuesta
+    // - { hours: [...] }
+    // - [...] (array directo)
+    // - { ok:false, message:"..." }
+    const parsedHours = Array.isArray(data?.hours)
+      ? data.hours
+      : (Array.isArray(data) ? data : []);
+
+    if (data?.ok === false && data?.message) {
+      console.warn('API getHours:', data.message);
     }
 
-    if (data.hours.length > 0) {
+    if (parsedHours.length > 0) {
       horaSelect.innerHTML = '<option value="">-- Selecciona una hora --</option>';
-      data.hours.forEach(h => {
+      parsedHours.forEach((hour) => {
         const opt = document.createElement('option');
-        opt.value = h;
-        opt.textContent = h;
+        opt.value = hour;
+        opt.textContent = hour;
         horaSelect.appendChild(opt);
       });
     } else {
       horaSelect.innerHTML = '<option value="">No hay horarios disponibles</option>';
     }
   } catch (err) {
-    console.error(err);
+    console.error('Error al cargar horarios:', err);
     horaSelect.innerHTML = '<option value="">Error al cargar horarios</option>';
   } finally {
     horaSelect.disabled = false;
@@ -254,8 +268,11 @@ if (form) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
+        redirect: 'follow'
       });
-      const data = await res.json();
+      const raw = await res.text();
+      let data;
+      try { data = JSON.parse(raw); } catch (_) { data = { ok: false, message: 'Respuesta no válida del servidor.' }; }
 
       if (!data.ok) {
         throw new Error(data.message || "No se pudo registrar la cita.");
@@ -266,9 +283,9 @@ if (form) {
         mensajeBox.className = "mensaje exito";
       }
       form.reset();
-      primerCitaCampos.style.display = "none";
-      citaSeguimientoCampos.style.display = "none";
-      esPrimerCitaSelect.value = "";
+      if (primerCitaCampos) primerCitaCampos.style.display = "none";
+      if (citaSeguimientoCampos) citaSeguimientoCampos.style.display = "none";
+      if (esPrimerCitaSelect) esPrimerCitaSelect.value = "";
       if (horaSelect) {
         horaSelect.innerHTML = "<option>-- Selecciona una fecha primero --</option>";
       }
