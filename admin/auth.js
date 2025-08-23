@@ -6,11 +6,11 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstati
 // Tu configuración de Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyADnESASv56RskkEVgt-VxPxUu3IwIWVwQ",
-  authDomain: "Odontoles-d926a.firebaseapp.com",
+  authDomain: "odontoles-d926a.firebaseapp.com",
   projectId: "odontoles-d926a",
   storageBucket: "odontoles-d926a.firebasestorage.app",
   messagingSenderId: "736431544596",
-  appId: "1:736431544596:web:70333f4f830582fa2e8a01"
+  appId: "1:736431544596:web:70333f4f830582fa2e8a01",
 };
 
 // =========================================
