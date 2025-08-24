@@ -1,6 +1,6 @@
 // GSA
 
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz1m7nlS6DmpIzXQnw2wZB6XL2A7_HKJw_hBbNlG1hH09GX5OOtUQjQWQj3LwXtOd73tg/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwrFW7dB19K7jl6N_LdekAjK3wMtRdaxnW9b0o_m3LvSGVhTtPKQ0ipmv785KDi6tszPA/exec";
 
 // Elementos del DOM
 const form = document.getElementById("formCita");
